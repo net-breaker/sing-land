@@ -1,0 +1,50 @@
+.header {
+    height: 36px;
+    background: var(--title-background);
+    display: flex;
+    justify-content: space-between;
+}
+
+.drag {
+    width: 100%;
+    height: 100%;
+    -webkit-app-region: drag;
+
+    img {
+        height: 24px;
+        padding: 6px;
+    }
+
+    span {
+        font-size: 14px;
+        color: var(--title-color);
+        vertical-align: top;
+        line-height: 36px;
+        margin-left: 6px;
+    }
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    height: 36px;
+    display: inline-flex;
+
+    li {
+        vertical-align: top;
+        display: inline-block;
+        margin: 0;
+        padding: 0 10px;
+        height: 36px;
+        line-height: 36px;
+        font-size: 20px;
+        color: var(--title-menu-icon-color);
+        cursor: unset;
+        transition: all 0.3s ease-in-out;
+    }
+
+    li:hover {
+        background: var(--title-menu-icon-background);
+    }
+}

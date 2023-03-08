@@ -1,0 +1,26 @@
+name: Pack-Editor
+
+on: [push, pull_request]
+
+jobs:
+
+  pack:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 18
+          cache: npm
+      - run: node --version; npm --version
+        working-directory: ./editor
+      - run: npm ci
+        working-directory: ./editor
+      - run: npm run pack
+        working-directory: ./editor
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: editor.asar
+          path: editor/editor.asar
