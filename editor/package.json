@@ -11,10 +11,10 @@
   },
   "wireit": {
     "start:ng": {
-      "command": "ng serve --host=0.0.0.0 --port 8020"
+      "command": "ng serve --port 8020"
     },
     "start:electron": {
-      "command": "electron . --port 8020"
+      "command": "echo You need to run the following commands: npx electron . --port 8020 --path=<path>"
     },
     "build:ng": {
       "command": "ng build --aot --base-href ./"
@@ -45,9 +45,8 @@
     "chokidar": "^3.5.3",
     "monaco-editor": "^0.34.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
-    "monaco-yaml": "^4.0.0",
-    "rxjs": "~7.4.0",
-    "sweetalert2": "^11.4.29",
+    "rxjs": "~7.8.0",
+    "sweetalert2": "^11.7.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
@@ -67,6 +66,6 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.5.2",
-    "wireit": "^0.7.2"
+    "wireit": "^0.9.5"
   }
 }

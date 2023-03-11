@@ -71,7 +71,7 @@ export class EditorComponent implements OnInit {
   editorInitialized() {
     this.editorInstance = monaco.editor.create(this.editorElement.nativeElement, {
       value: fs.readFileSync(this.filePath, "utf8"),
-      language: "yaml",
+      language: "json",
       theme: "vs-dark",
       wordWrap: "off",
       automaticLayout: true,

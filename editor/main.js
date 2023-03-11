@@ -4,8 +4,14 @@ let appWindow;
 let isAlwaysOnTop = false;
 
 function createWindow() {
-  const pathIndex = process.argv.indexOf("--path") + 1;
-  const path = process.argv[pathIndex];
+  let arguments = Array()
+
+  process.argv.forEach((val, index) => {
+    if (val.indexOf("--path") === 0) {
+      // example: --path=/home/anonysoul/Documents/cliesh.yaml
+      arguments.push(val);
+    }
+  });
 
   appWindow = new BrowserWindow({
     width: 850,
@@ -22,7 +28,7 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
       webSecurity: false,
-      additionalArguments: ["--path", path]
+      additionalArguments: arguments
     }
   });
 

@@ -1,7 +1,7 @@
 # Sing Land Editor
 
-Just for edit yaml file.
+Just for edit json file.
 
 ```shell
-npx electron . --path <file-path>
+npx electron . --path=<file-path>
 ```
