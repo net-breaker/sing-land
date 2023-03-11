@@ -13,6 +13,7 @@ jobs:
         with:
           node-version: 18
           cache: npm
+          cache-dependency-path: editor/package-lock.json
       - run: node --version; npm --version
         working-directory: ./editor
       - run: npm ci
