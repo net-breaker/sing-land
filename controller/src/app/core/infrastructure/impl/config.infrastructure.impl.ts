@@ -10,10 +10,10 @@ export class ConfigInfrastructureImpl implements ConfigInfrastructure {
   }
 
   /**
-   * clash version in package
+   * singbox version in package
    */
-  get clashVersionInPackage(): string {
-    return this.get<string>("clash-version", "unknown");
+  get singboxVersionInPackage(): string {
+    return this.get<string>("singbox-version", "unknown");
   }
 
   private get homeDirectory(): string {
@@ -32,16 +32,16 @@ export class ConfigInfrastructureImpl implements ConfigInfrastructure {
     return absolutePath;
   }
 
-  get clashDirectory(): string {
-    const clashDir = config.get<string>("home.clash.directory");
-    const absolutePath = path.join(this.homeDirectory, clashDir);
+  get singboxDirectory(): string {
+    const singboxDir = config.get<string>("home.singbox.directory");
+    const absolutePath = path.join(this.homeDirectory, singboxDir);
     if (!fs.existsSync(absolutePath)) fs.mkdirSync(absolutePath, { recursive: true });
     return absolutePath;
   }
 
   get profilesDirectory(): string {
-    const clashDir = config.get<string>("home.data.profiles.directory");
-    const absolutePath = path.join(this.homeDirectory, clashDir);
+    const profilesDir = config.get<string>("home.data.profiles.directory");
+    const absolutePath = path.join(this.homeDirectory, profilesDir);
     if (!fs.existsSync(absolutePath)) fs.mkdirSync(absolutePath, { recursive: true });
     return absolutePath;
   }

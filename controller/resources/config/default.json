@@ -1,6 +1,6 @@
 {
   "version": "pre-alpha",
-  "clash-version": "Premium 2022.08.26",
+  "singbox-version": "Premium 2022.08.26",
   "logger": {
     "directory": "log",
     "level": "all"
@@ -10,8 +10,8 @@
     "setting": {
       "directory": "setting"
     },
-    "clash": {
-      "directory": "clash"
+    "singbox": {
+      "directory": "sing-box"
     },
     "data": {
       "directory": "data",

@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { ClashService } from "src/app/core/service/clash.service";
 import { SettingService } from "src/app/core/service/setting.service";
+import { SingboxService } from "src/app/core/service/singbox.service";
 
 @Component({
   selector: "app-setting",
@@ -10,10 +10,10 @@ import { SettingService } from "src/app/core/service/setting.service";
 export class SettingComponent implements OnInit {
   version: string | undefined;
 
-  constructor(private clashService: ClashService, private settingService: SettingService) {}
+  constructor(private singboxService: SingboxService, private settingService: SettingService) {}
 
   async ngOnInit(): Promise<void> {
-    if (await this.clashService.isRunningOrConnected()) {
+    if (await this.singboxService.isRunningOrConnected()) {
       this.settingService.getVersion().subscribe({
         next: (version) => {
           this.version = version;

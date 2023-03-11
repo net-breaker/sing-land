@@ -10,12 +10,12 @@ export class SettingInfrastructureImpl implements SettingInfrastructure {
     });
   }
 
-  getClashInstalledVersion(): string | undefined {
-    return this.get<string>("clash-version");
+  getSingboxInstalledVersion(): string | undefined {
+    return this.get<string>("singbox-version");
   }
 
-  setClashInstalledVersion(version: string): void {
-    this.set("clash-version", version);
+  setSingboxInstalledVersion(version: string): void {
+    this.set("singbox-version", version);
   }
 
   get<T>(key: string, defaultValue?: T): T | undefined {

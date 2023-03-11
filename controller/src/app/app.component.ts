@@ -1,10 +1,9 @@
 import { Component } from "@angular/core";
 import { ipcRenderer } from "electron";
-import { getLogger } from "log4js";
 import { platform } from "os";
-import { debounceTime, Subscription } from "rxjs";
+import { debounceTime } from "rxjs";
 import { ConfigManager } from "./core/manager/config.manager";
-import { ClashService } from "./core/service/clash.service";
+import { SingboxService } from "./core/service/singbox.service";
 
 @Component({
   selector: "app-root",
@@ -19,11 +18,11 @@ export class AppComponent {
   version: string = "unknown";
   status: "running" | "stopped" = "stopped";
 
-  constructor(configManager: ConfigManager, private clashService: ClashService) {
+  constructor(configManager: ConfigManager, private singboxService: SingboxService) {
     this.platform = platform();
     this.version = configManager.version;
 
-    this.clashService.clashStatusChanged$
+    this.singboxService.singboxStatusChanged$
       .pipe(
         // selected unmatched local profile
         // cause the animation transitions to look unnatural

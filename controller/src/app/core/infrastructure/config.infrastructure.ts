@@ -3,16 +3,16 @@ export abstract class ConfigInfrastructure {
   abstract logLevel: string;
 
   abstract loggerDirectory: string;
-  abstract clashDirectory: string;
+  abstract singboxDirectory: string;
   abstract profilesDirectory: string;
   abstract settingDirectory: string;
 
   /**
-   * clash version in package
+   * singbox version in package
    *
-   * for install clash
+   * for install singbox
    */
-  abstract clashVersionInPackage: string;
+  abstract singboxVersionInPackage: string;
 
   abstract get<T>(key: string, defaultValue?: T): T;
   abstract has(key: string): boolean;

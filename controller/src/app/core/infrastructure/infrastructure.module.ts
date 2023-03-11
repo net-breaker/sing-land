@@ -1,14 +1,14 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { NotificationProvider } from "../provider/notification.provider";
-import { ClashInfrastructure } from "./clash.infrastructure";
 import { ConfigInfrastructure } from "./config.infrastructure";
-import { ClashInfrastructureImpl } from "./impl/clash.infrastructure.impl";
 import { ConfigInfrastructureImpl } from "./impl/config.infrastructure.impl";
 import { LoggerInfrastructureImpl } from "./impl/logger.infrastructure.impl";
 import { SettingInfrastructureImpl } from "./impl/setting.infrastructure.impl";
+import { SingboxInfrastructureImpl } from "./impl/singbox.infrastructure.impl";
 import { LoggerInfrastructure } from "./logger.infrastructure";
 import { SettingInfrastructure } from "./setting.infrastructure";
+import { SingboxInfrastructure } from "./singbox.infrastructure";
 
 @NgModule({
   declarations: [],
@@ -29,9 +29,10 @@ import { SettingInfrastructure } from "./setting.infrastructure";
       deps: [ConfigInfrastructure]
     },
     {
-      provide: ClashInfrastructure,
-      useFactory: (notificationProvider: NotificationProvider, configInfrastructure: ConfigInfrastructure, settingInfrastructure: SettingInfrastructure) => new ClashInfrastructureImpl(notificationProvider, configInfrastructure, settingInfrastructure),
-      deps: [NotificationProvider,ConfigInfrastructure, SettingInfrastructure]
+      provide: SingboxInfrastructure,
+      useFactory: (notificationProvider: NotificationProvider, configInfrastructure: ConfigInfrastructure, settingInfrastructure: SettingInfrastructure) =>
+        new SingboxInfrastructureImpl(notificationProvider, configInfrastructure, settingInfrastructure),
+      deps: [NotificationProvider, ConfigInfrastructure, SettingInfrastructure]
     }
   ]
 })
