@@ -1,0 +1,5 @@
+<ng-container [ngSwitch]="level">
+  <nz-tag nzColor="blue" *ngSwitchCase="'info'">info</nz-tag>
+  <nz-tag nzColor="orange" *ngSwitchCase="'debug'">debug</nz-tag>
+  <nz-tag nzColor="cyan" *ngSwitchDefault>{{ level }}</nz-tag>
+</ng-container>

@@ -8,7 +8,7 @@ function createWindow() {
 
   process.argv.forEach((val, index) => {
     if (val.indexOf("--path") === 0) {
-      // example: --path=/home/anonysoul/Documents/cliesh.yaml
+      // example: --path=/home/anonysoul/Documents/singland.json
       arguments.push(val);
     }
   });

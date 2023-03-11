@@ -1,0 +1,22 @@
+<div class="profile {{ loadding ? 'loadding' : '' }} {{ selected ? 'active' : '' }}" *ngIf="fileProfile" draggable="true" title="{{ fileProfile.name }}&#10;{{ type }}" (click)="selectProfile()">
+  <div class="title">
+    {{ fileProfile.name }}
+  </div>
+  <div class="sub">
+    <div class="type">
+      <ng-container *ngIf="fileProfile.subscribeUrl === undefined"> local file </ng-container>
+      <ng-container *ngIf="fileProfile.subscribeUrl !== undefined"> remote file </ng-container>
+    </div>
+    <div class="duration">{{ (fileProfile.updateTimestamp ? fileProfile.updateTimestamp : fileProfile.createTimestamp) | durationTime }}</div>
+  </div>
+</div>
+
+<div class="profile {{ loadding ? 'loadding' : '' }} {{ selected ? 'active' : '' }}" *ngIf="remoteProfile" title="{{ remoteProfile.name }}&#10;{{ type }}" draggable="true" (click)="selectProfile()">
+  <div class="title">
+    {{ remoteProfile.name }}
+  </div>
+  <div class="sub">
+    <div class="type">remote connection</div>
+    <div class="duration">{{ (remoteProfile.updateTimestamp ? remoteProfile.updateTimestamp : remoteProfile.createTimestamp) | durationTime }}</div>
+  </div>
+</div>

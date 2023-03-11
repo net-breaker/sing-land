@@ -1,0 +1,71 @@
+<!-- ignore
+    authentication: [],
+    mode: "rule"
+  -->
+<nz-divider nzText="Port" nzOrientation="left" style="margin-top: -6px;"></nz-divider>
+<div class="group">
+  <div class="item">
+    <div class="title">Port</div>
+    <div class="value">
+      <span nz-typography nzEditable [nzEditTooltip]="null" nzCopyable [nzCopyTooltips]="null" [(nzContent)]="config.port" (nzContentChange)="handleAnytingChange()"></span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Socks port</div>
+    <div class="value">
+      <span nz-typography nzEditable [nzEditTooltip]="null" nzCopyable [nzCopyTooltips]="null" [(nzContent)]="config.socksPort" (nzContentChange)="handleAnytingChange()"></span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Redirect port</div>
+    <div class="value">
+      <span nz-typography nzEditable [nzEditTooltip]="null" nzCopyable [nzCopyTooltips]="null" [(nzContent)]="config.redirectPort" (nzContentChange)="handleAnytingChange()"></span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Transparent proxy port</div>
+    <div class="value">
+      <span nz-typography nzEditable [nzEditTooltip]="null" nzCopyable [nzCopyTooltips]="null" [(nzContent)]="config.transparentProxyPort" (nzContentChange)="handleAnytingChange()"></span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Mixed port</div>
+    <div class="value">
+      <span nz-typography nzEditable [nzEditTooltip]="null" nzCopyable [nzCopyTooltips]="null" [(nzContent)]="config.mixedPort" (nzContentChange)="handleAnytingChange()"></span>
+    </div>
+  </div>
+</div>
+
+<nz-divider nzText="Options" nzOrientation="left"></nz-divider>
+<div class="group">
+  <div class="item">
+    <div class="title">IPv6</div>
+    <div class="value">
+      <nz-switch [(ngModel)]="config.ipv6" (ngModelChange)="handleAnytingChange()"></nz-switch>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Allow LAN</div>
+    <div class="value">
+      <nz-switch [(ngModel)]="config.allowLan" (ngModelChange)="handleAnytingChange()"></nz-switch>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Bind address</div>
+    <div class="value">
+      <span nz-typography nzEditable [nzEditTooltip]="null" [(nzContent)]="config.bindAddress" (nzContentChange)="handleAnytingChange()"></span>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Mode</div>
+    <div class="value">
+      <nz-segmented nzSize="small" [(ngModel)]="config.mode" [nzOptions]="mode" (ngModelChange)="handleAnytingChange()"></nz-segmented>
+    </div>
+  </div>
+  <div class="item">
+    <div class="title">Log level</div>
+    <div class="value">
+      <nz-segmented nzSize="small" [(ngModel)]="config.logLevel" [nzOptions]="logLevel" (ngModelChange)="handleAnytingChange()"></nz-segmented>
+    </div>
+  </div>
+</div>

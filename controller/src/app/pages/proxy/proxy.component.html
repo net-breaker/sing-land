@@ -1,0 +1,36 @@
+<div class="current-rule">
+  <div class="options">
+    <div>Global</div>
+    <div>Rule</div>
+    <div>Script</div>
+    <div>Direct</div>
+    <div>Reject</div>
+  </div>
+  <div class="indicator">
+    Current: Global
+    <img src="../../../assets/arrow/pull-down.png" />
+  </div>
+</div>
+
+<!-- <div class="provider" *ngFor="let provider of providers;"> -->
+<div class="provider">
+  <div class="tools">
+    <div class="title">
+      {{ provider.name }}
+      <i nz-icon nzType="double-right" nzTheme="outline"></i>
+      <i nz-icon nzType="thunderbolt" nzTheme="outline"></i>
+      <!-- <i nz-icon nzType="aim" nzTheme="outline"></i> -->
+    </div>
+  </div>
+  <div nz-row>
+    <div nz-col nzMd="12" nzLg="8" nzXl="6" *ngFor="let proxy of provider.proxies; index as i">
+      <div class="proxy">
+        {{ proxy.name }}
+        <div class="sub">
+          <div class="type">{{ proxy.type }}</div>
+          <div class="delay">100 ms</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

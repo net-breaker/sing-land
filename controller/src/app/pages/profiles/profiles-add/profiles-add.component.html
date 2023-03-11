@@ -1,0 +1,113 @@
+<!-- add profiles -->
+<button nz-button nz-popover nzType="primary" nzShape="circle" nzSize="large" class="btn-add" [nzPopoverContent]="addProfile" nzPopoverPlacement="top">
+  <span nz-icon nzType="plus" nzTheme="outline"></span>
+</button>
+<ng-template #addProfile>
+  <span class="add-types">
+    <button nz-button nzType="primary" (click)="fileSelectorElement.nativeElement.click()">local file</button>
+    <button nz-button nzType="primary" (click)="showAddRemoteFileProfileModal()">remote file</button>
+    <button nz-button nzType="primary" (click)="showAddRemoteConnectionProfileModal()">remote connection</button>
+  </span>
+</ng-template>
+<!-- add/update - local file -->
+<input #fileSelector type="file" accept=".yaml,.yml" multiple style="display: none" />
+<nz-modal
+  [(nzVisible)]="isLocalFileModalVisible"
+  [nzOkLoading]="isLocalFileModalOKLoadding"
+  nzTitle="{{ isEditing ? 'Update' : 'Add' }} local profile"
+  nzOkText="{{ isEditing ? 'Update' : 'Add' }}"
+  nzCancelText="Cancel"
+  (nzOnOk)="submitLocalFileProfile()"
+  (nzOnCancel)="cancelLocalFileProfile()"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="localFileProfileForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input profile's name!" nzValidatingTip="Validating...">
+          <input nz-input formControlName="name" id="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="path">Path</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid path!">
+          <input nz-input formControlName="path" id="path" [disabled]="isEditing" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+<!-- add/update - remote file -->
+<nz-modal
+  [(nzVisible)]="isRemoteFileModalVisible"
+  [nzOkLoading]="isRemoteFileModalOKLoadding"
+  nzTitle="{{ isEditing ? 'Update' : 'Add' }} remote profile"
+  nzOkText="{{ isEditing ? 'Update' : 'Add' }}"
+  nzCancelText="Cancel"
+  (nzOnOk)="submitRemoteFileProfile()"
+  (nzOnCancel)="isRemoteFileModalVisible = false"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="remoteFileProfileForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input profile's name!">
+          <input nz-input formControlName="name" id="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="url">URL</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid URL!">
+          <input nz-input formControlName="url" id="url" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>
+<!-- add/update - remote connection -->
+<nz-modal
+  [(nzVisible)]="isRemoteConnectionModalVisible"
+  [nzOkLoading]="isRemoteConnectionModalOKLoadding"
+  nzTitle="{{ isEditing ? 'Update' : 'Add' }} remote connection"
+  nzOkText="{{ isEditing ? 'Update' : 'Add' }}"
+  nzCancelText="Cancel"
+  (nzOnOk)="submitRemoteConnectionProfile()"
+  (nzOnCancel)="isRemoteConnectionModalVisible = false"
+>
+  <ng-container *nzModalContent>
+    <form nz-form [formGroup]="remoteConnectionProfileForm">
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">Name</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input remote connection's name!">
+          <input nz-input formControlName="name" id="name" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="host">Host</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" [nzValidateStatus]="remoteConnectionProfileForm.controls['host']" nzErrorTip="Please input remote connection's host!">
+          <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+            <ng-template #addOnBeforeTemplate>
+              <nz-select formControlName="schema" class="schema-select">
+                <nz-option nzLabel="http" nzValue="http://"></nz-option>
+                <nz-option nzLabel="https" nzValue="https://"></nz-option>
+              </nz-select>
+            </ng-template>
+            <input nz-input formControlName="host" id="host" placeholder="127.0.0.1" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="port">Port</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input remote connection's port!">
+          <nz-input-number [nzMin]="1" [nzMax]="65535" [nzStep]="1" formControlName="port" id="port"></nz-input-number>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="authorization">Authorization</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Please input remote connection's authorization!">
+          <input nz-input formControlName="authorization" id="authorization" />
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </ng-container>
+</nz-modal>

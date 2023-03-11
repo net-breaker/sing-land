@@ -1,0 +1,38 @@
+<div class="tools">
+  <nz-radio-group nzSize="small" [(ngModel)]="level" (ngModelChange)="filterLogs()">
+    <label nz-radio-button nzValue="all"><span>all</span></label>
+    <label nz-radio-button nzValue="info"><span>info</span></label>
+    <label nz-radio-button nzValue="warn"><span>warn</span></label>
+    <label nz-radio-button nzValue="error"><span>error</span></label>
+    <label nz-radio-button nzValue="debug"><span>debug</span></label>
+  </nz-radio-group>
+  <i nz-icon nzType="clear" nzTheme="outline" (click)="clear()"></i>
+</div>
+<nz-empty *ngIf="logs.length === 0" nzNotFoundContent="Nothing"></nz-empty>
+<nz-list *ngIf="logs.length !== 0" nzItemLayout="horizontal">
+  <nz-list-item *ngFor="let log of logs; trackBy: trackById">
+    <nz-list-item-meta>
+      <nz-list-item-meta-title>
+        {{ log.to }}
+        {{ log.description }}
+      </nz-list-item-meta-title>
+      <nz-list-item-meta-description>
+        {{ log.node }}
+        <br *ngIf="log.node !== undefined" />
+        {{ log.from }}
+      </nz-list-item-meta-description>
+    </nz-list-item-meta>
+    <nz-list-item-extra>
+      <div class="matched">
+        {{ log.matched }}
+      </div>
+      <div class="time">
+        {{ log.time | formatTime }}
+      </div>
+      <div class="tags">
+        <app-network-protocol-tag [protocol]="log.protocol"></app-network-protocol-tag>
+        <app-log-level-tag [level]="log.level"></app-log-level-tag>
+      </div>
+    </nz-list-item-extra>
+  </nz-list-item>
+</nz-list>

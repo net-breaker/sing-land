@@ -1,0 +1,7 @@
+<ng-container [ngSwitch]="type">
+  <nz-tag nzColor="#5766F7" *ngSwitchCase="'HTTP'">HTTP</nz-tag>
+  <nz-tag nzColor="#2db7f5" *ngSwitchCase="'HTTP Connect'">HTTP Connect</nz-tag>
+  <nz-tag nzColor="#1013e9" *ngSwitchCase="'TUN'">TUN</nz-tag>
+  <nz-tag nzColor="#87d068" *ngSwitchCase="'Socks5'">Socks5</nz-tag>
+  <nz-tag nzColor="#E39040" *ngSwitchDefault>{{ type }}</nz-tag>
+</ng-container>

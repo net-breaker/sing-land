@@ -1,4 +1,4 @@
-# Sing Land Editor
+# Singland json Editor
 
 Just for edit json file.
 

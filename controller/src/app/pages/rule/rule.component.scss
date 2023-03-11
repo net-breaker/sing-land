@@ -1,0 +1,82 @@
+.tools,
+nz-list,
+nz-spin {
+  position: absolute;
+  margin-left: -24px;
+  width: calc(100% - 182px);
+}
+
+.tools {
+  margin-top: -24px;
+  // height: 40px;
+  padding: 8px;
+  border-bottom: 1px solid #e2e2e2;
+
+  nz-input-group {
+    width: auto;
+    margin-right: 20px;
+  }
+}
+
+nz-spin {
+  margin-top: 16px;
+  height: calc(100% - 80px);
+  background: rgb(255 255 255 / 60%);
+  z-index: 1;
+}
+
+nz-empty {
+  margin-left: 0;
+  height: calc(100% - 80px);
+  width: 100%;
+  padding-top: 150px;
+}
+
+nz-list {
+  margin-top: 25px;
+  overflow-y: auto;
+  height: calc(100% - 90px);
+}
+
+::ng-deep :host {
+  background: red;
+  nz-list {
+    margin-top: 25px;
+    overflow-y: auto;
+    height: calc(100% - 50px);
+  }
+}
+
+:host ::ng-deep {
+  .ant-list-item-meta-title {
+    margin-bottom: -2px;
+  }
+
+  .ant-list-item-meta-description {
+    font-size: 12px;
+  }
+
+  nz-list-item {
+    padding: 2px 14px;
+    transition: padding-right 0.3s;
+
+    i[nz-icon] {
+      position: absolute;
+      margin-top: -47px;
+      margin-left: 8px;
+      transition: margin-left 0.3s;
+    }
+  }
+
+  .code {
+    font-size: 12px !important;
+  }
+}
+
+nz-list-item-extra {
+  text-align: right;
+}
+
+.matched {
+  font-size: 12px;
+}

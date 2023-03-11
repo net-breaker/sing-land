@@ -1,0 +1,36 @@
+nz-divider {
+  user-select: none;
+}
+
+.group {
+  user-select: none;
+
+  .item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #e7e7e7;
+    padding: 5px 18px;
+    border-radius: 6px;
+    margin: 4px 0;
+    transition: background-color 0.3s;
+
+    .title {
+      font-weight: bold;
+    }
+  }
+
+  .item:hover {
+    background-color: #e7e7e7;
+  }
+}
+
+:host ::ng-deep {
+  span[nz-icon] {
+    color: #18345d;
+  }
+
+  .ant-switch-checked {
+    background: #18345d;
+  }
+}

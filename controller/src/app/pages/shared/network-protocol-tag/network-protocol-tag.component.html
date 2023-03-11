@@ -1,0 +1,7 @@
+<ng-container [ngSwitch]="protocol">
+  <nz-tag nzColor="#E059C5" *ngSwitchCase="'tcp'">TCP</nz-tag>
+  <nz-tag nzColor="#F79957" *ngSwitchCase="'udp'">UDP</nz-tag>
+  <nz-tag nzColor="#108ee9" *ngSwitchCase="'dns'">DNS</nz-tag>
+  <nz-tag nzColor="#1013e9" *ngSwitchCase="'tun'">TUN</nz-tag>
+  <nz-tag nzColor="#4DFFBB" *ngSwitchDefault>{{ protocol }}</nz-tag>
+</ng-container>

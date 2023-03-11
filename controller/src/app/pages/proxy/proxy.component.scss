@@ -1,0 +1,164 @@
+.current-rule {
+  text-align: center;
+  width: 440px;
+  position: absolute;
+  top: 1px;
+  background: whitesmoke;
+  border-radius: 12px;
+  z-index: 1;
+  -webkit-user-select: none;
+  user-select: none;
+  position: absolute;
+  left: calc(50% - 130px);
+  transition: top 0.3s;
+
+  .options {
+    height: 0px;
+    padding: 16px;
+    overflow-y: hidden;
+    transition: all 0.3s;
+
+    > div {
+      display: inline-block;
+      padding: 6px 17px;
+      border: 1px solid #afafaf;
+      border-radius: 11px;
+      margin-right: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    > div:last-child {
+      margin-right: 0px;
+    }
+
+    > div:hover {
+      background-color: #afafaf;
+    }
+  }
+
+  img {
+    display: block;
+    text-align: center;
+    margin: -5px auto 0 auto;
+  }
+
+  .indicator {
+    position: absolute;
+    width: 150px;
+    padding-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-left: 145px;
+    background: whitesmoke;
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px;
+    transition: padding-top 0.3s;
+  }
+
+  .indicator::after {
+    content: "";
+    display: block;
+    width: 150px;
+    box-shadow: 0 -13px 24px 4px;
+    z-index: -1;
+    position: absolute;
+    transition: box-shadow 0.3s;
+  }
+}
+
+.current-rule:hover {
+  top: 20px;
+  box-shadow: 0px 0px 15px -3px;
+
+  .options {
+    height: auto;
+    padding-top: 40px;
+    padding-bottom: 20px;
+  }
+
+  .indicator {
+    padding-top: 0px;
+  }
+
+  .indicator::after {
+    box-shadow: 0 -9px 17px 3px;
+  }
+}
+
+// provider
+
+.provider {
+  z-index: 0;
+  padding-top: 60px;
+
+  .tools {
+    .title {
+      line-height: 20px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    i {
+      cursor: pointer;
+      float: right;
+      margin-left: 20px;
+    }
+
+    i[nzType="double-right"] {
+      transform: rotate(90deg);
+      transition: transform 0.3s;
+    }
+  }
+
+  div[nz-col] {
+    .proxy {
+      height: 90%;
+      width: 96%;
+      margin: 3px;
+      padding: 5px;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      outline: none;
+      border: 1px solid #ebebeb;
+      background-color: #f5f5f5;
+      cursor: pointer;
+      transition: box-shadow 0.3s;
+
+      .sub {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .type {
+          opacity: 0.2;
+          transition: opacity 0.3s;
+        }
+
+        .delay {
+          color: #d4b75c;
+          color: #e67f3c;
+          color: #e6453c;
+          color: #67c23a;
+        }
+      }
+    }
+
+    .proxy:hover {
+      box-shadow: 0 0 15px -5px;
+    }
+
+    .proxy.active {
+      background-image: linear-gradient(145deg, #9fb8ad 5%, #1fc8db 50%, #7891b7 75%);
+      color: white;
+
+      .sub .type {
+        opacity: 0.8;
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+.btn-add {
+  color: #fff;
+  background-color: #163057;
+  border-color: #163057;
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  box-shadow: 0 0 10px 0px #333;
+  z-index: 1;
+}
+
+.add-types {
+  button {
+    margin-right: 15px;
+  }
+  button:last-child {
+    margin-right: 0px;
+  }
+}
+
+.schema-select {
+  width: 75px;
+}

@@ -1,0 +1,26 @@
+{
+  "version": "pre-alpha",
+  "clash-version": "Premium 2022.08.26",
+  "logger": {
+    "directory": "log",
+    "level": "all"
+  },
+  "home": {
+    "directory": ".singland",
+    "setting": {
+      "directory": "setting"
+    },
+    "clash": {
+      "directory": "clash"
+    },
+    "data": {
+      "directory": "data",
+      "profiles": {
+        "directory": "data/profiles"
+      }
+    }
+  },
+  "http-timeout": {
+    "sync-profile-from-remote": 10000
+  }
+}
