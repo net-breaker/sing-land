@@ -1,44 +1,14 @@
 <nz-layout class="app-layout platform-{{ platform }}">
   <nz-sider class="menu-sidebar" nzWidth="180px" nzBreakpoint="md" [nzTrigger]="null">
     <div class="sidebar-logo">
-      <img src="../assets/logo.png" alt="logo" />
+      <img src="../assets/logo.svg" alt="logo" />
       <div class="version">Singland version: {{ version }}</div>
     </div>
     <ul nz-menu nzMode="inline">
       <li nz-menu-item nzMatchRouter>
-        <i nz-icon nzType="sliders" nzTheme="outline"></i>
-        <span>
-          <a routerLink="/general">General</a>
-        </span>
-      </li>
-      <li nz-menu-item nzMatchRouter>
         <i nz-icon nzType="group" nzTheme="outline"></i>
         <span>
           <a routerLink="/profiles">Profiles</a>
-        </span>
-      </li>
-      <li nz-menu-item nzMatchRouter>
-        <i nz-icon nzType="global" nzTheme="outline"></i>
-        <span>
-          <a routerLink="/proxy">Proxies</a>
-        </span>
-      </li>
-      <li nz-menu-item nzMatchRouter>
-        <i nz-icon nzType="radar-chart" nzTheme="outline"></i>
-        <span>
-          <a routerLink="/rule">Rules</a>
-        </span>
-      </li>
-      <li nz-menu-item nzMatchRouter>
-        <i nz-icon nzType="link" nzTheme="outline"></i>
-        <span>
-          <a routerLink="/connection">Connections</a>
-        </span>
-      </li>
-      <li nz-menu-item nzMatchRouter>
-        <i nz-icon nzType="history" nzTheme="outline"></i>
-        <span>
-          <a routerLink="/log">Logs</a>
         </span>
       </li>
       <li nz-menu-item nzMatchRouter>
@@ -54,14 +24,14 @@
         </span>
       </li>
     </ul>
-    <div class="traffic {{ trafficMonitor === undefined ? 'hide' : '' }}">
+    <div class="traffic {{ status === 'stopped' ? 'hide' : '' }}">
       <div>
-        {{ traffic.up | formatBytes }}/s
+        {{ 0 | formatBytes }}/s
         <img src="../assets/arrow/arrow.png" />
       </div>
       <div>
         <img src="../assets/arrow/arrow.png" />
-        {{ traffic.down | formatBytes }}/s
+        {{ 0 | formatBytes }}/s
       </div>
     </div>
   </nz-sider>

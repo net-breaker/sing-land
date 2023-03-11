@@ -16,12 +16,7 @@ import { InfrastructureModule } from "./core/infrastructure/infrastructure.modul
 import { LoggerInfrastructure } from "./core/infrastructure/logger.infrastructure";
 import { ManagerModule } from "./core/manager/manager.module";
 import { IconsProviderModule } from "./icons-provider.module";
-import { ConnectionModule } from "./pages/connection/connection.module";
-import { GeneralModule } from "./pages/general/general.module";
-import { LogsModule } from "./pages/logs/logs.module";
 import { ProfilesModule } from "./pages/profiles/profiles.module";
-import { ProxyModule } from "./pages/proxy/proxy.module";
-import { RuleModule } from "./pages/rule/rule.module";
 import { PipeModule } from "./pipe/pipe.module";
 
 registerLocaleData(zh);
@@ -37,12 +32,7 @@ registerLocaleData(zh);
     IconsProviderModule,
     NzLayoutModule,
     NzMenuModule,
-    GeneralModule,
     ProfilesModule,
-    RuleModule,
-    ConnectionModule,
-    LogsModule,
-    ProxyModule,
     PipeModule,
     InfrastructureModule,
     ManagerModule

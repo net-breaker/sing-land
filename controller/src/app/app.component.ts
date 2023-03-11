@@ -4,9 +4,7 @@ import { getLogger } from "log4js";
 import { platform } from "os";
 import { debounceTime, Subscription } from "rxjs";
 import { ConfigManager } from "./core/manager/config.manager";
-import { ClashConfigService } from "./core/service/clash-config.service";
 import { ClashService } from "./core/service/clash.service";
-import { Traffic, TrafficMonitorService } from "./core/service/monitor-traffic.service";
 
 @Component({
   selector: "app-root",
@@ -14,53 +12,36 @@ import { Traffic, TrafficMonitorService } from "./core/service/monitor-traffic.s
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  private logger = getLogger("AppComponent");
-
   isMaximize = false;
   isAlwaysOnTop = false;
 
   platform: string = "linux";
   version: string = "unknown";
-  traffic: Traffic = { up: 0, down: 0 };
+  status: "running" | "stopped" = "stopped";
 
-  constructor(configManager: ConfigManager, private clashService: ClashService, private clashcService: ClashConfigService, private trafficMonitorService: TrafficMonitorService) {
+  constructor(configManager: ConfigManager, private clashService: ClashService) {
     this.platform = platform();
     this.version = configManager.version;
 
-    this.clashService.clashStatusChanged$.pipe(
-      // selected unmatched local profile
-      // cause the animation transitions to look unnatural
-      debounceTime(300)
-    ).subscribe({
-      next: (status) => {
-        switch (status) {
-          case "connected":
-          case "running":
-            this.distoryTrafficMonitor();
-            this.createTrafficMonitor();
-            break;
-          default:
-            this.distoryTrafficMonitor();
-            break;
+    this.clashService.clashStatusChanged$
+      .pipe(
+        // selected unmatched local profile
+        // cause the animation transitions to look unnatural
+        debounceTime(300)
+      )
+      .subscribe({
+        next: (status) => {
+          switch (status) {
+            case "connected":
+            case "running":
+              this.status = "running";
+              break;
+            default:
+              this.status = "stopped";
+              break;
+          }
         }
-      }
-    });
-  }
-
-  trafficMonitor: Subscription | undefined;
-
-  createTrafficMonitor(): void {
-    this.traffic = { up: 0, down: 0 };
-    this.trafficMonitor = this.trafficMonitorService.traffic$.subscribe({
-      next: (traffic) => {
-        this.traffic = traffic;
-      }
-    });
-  }
-
-  distoryTrafficMonitor(): void {
-    this.trafficMonitor?.unsubscribe();
-    this.trafficMonitor = undefined;
+      });
   }
 
   ngOnInit(): void {
