@@ -1,17 +1,20 @@
 import { Observable } from "rxjs";
 
-export interface SingboxProcessControllerEntry {
-  port: number;
-  secret: string;
+export interface Log {
+  level: LogLevel;
+  time: string;
+  message: string;
 }
+
+export type LogLevel = "INFO" | "PANIC" | "WARN" | "ERROR" | "TRACE" | "DEBUG" | "FATAL" | "UNKNOWN";
 
 export type SingboxStatus = "installing" | "starting" | "running" | "stopping" | "stopped";
 
 export abstract class SingboxInfrastructure {
   abstract singboxStatusChanged$: Observable<SingboxStatus>;
+  abstract singboxLogs$: Observable<Log | null>;
 
   abstract currentStatus: SingboxStatus;
-  abstract currentControllerEntry: SingboxProcessControllerEntry | undefined;
 
   /**
    * start singbox process

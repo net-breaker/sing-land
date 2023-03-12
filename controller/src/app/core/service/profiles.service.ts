@@ -103,7 +103,7 @@ export class ProfilesService {
   async selectProfile(id: string): Promise<void> {
     const profile = this.getProfiles().find((profile) => profile.id === id);
     if (profile === undefined) throw new Error("Profile not found");
-    await this.verifyProfile(profile);
+    // await this.verifyProfile(profile);
     this.settingManager.set("profile.selected", id);
     this.profileSelectedChangedBehaviorSubject.next(profile);
   }
@@ -214,7 +214,7 @@ export class ProfilesService {
               reject(new Error("Read file error"));
               return;
             }
-            const absolutePath = path.join(this.configManager.profilesDirectory, new Date().getTime() + ".yaml");
+            const absolutePath = path.join(this.configManager.profilesDirectory, new Date().getTime() + ".json");
             const array = new Uint8Array(content as ArrayBuffer);
             fs.writeFile(absolutePath, array, (err) => {
               if (err) {

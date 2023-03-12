@@ -26,6 +26,7 @@ export class SingboxManager {
   private logger = getLogger("SingboxManager");
 
   localSingboxStatusChanged$ = this.singboxInfrastructure.singboxStatusChanged$;
+  localSingboxLogs$ = this.singboxInfrastructure.singboxLogs$;
 
   private isRemoteSingboxConnected: boolean = false;
   private remoteSingboxStatusChangedBehaviorSubject = new BehaviorSubject<RemoteSingboxStatus>("disconnected");
@@ -39,17 +40,6 @@ export class SingboxManager {
     return `${this.schema}${this.host}:${this.port}`;
   }
 
-  private authorizationToken: string | undefined;
-  get authorizationHeaders(): any {
-    if (this.authorizationToken === undefined) {
-      return undefined;
-    } else {
-      return {
-        Authorization: `Bearer ${this.authorizationToken}`
-      };
-    }
-  }
-
   private singboxConfigChangedBehaviorSubject = new BehaviorSubject<undefined | true>(undefined);
   singboxConfigChanged$ = this.singboxConfigChangedBehaviorSubject.asObservable();
 
@@ -60,8 +50,6 @@ export class SingboxManager {
           case "running":
             this.schema = "http://";
             this.host = "127.0.0.1";
-            this.port = this.singboxInfrastructure.currentControllerEntry!.port;
-            this.authorizationToken = this.singboxInfrastructure.currentControllerEntry!.secret;
             break;
           default:
             break;
@@ -90,7 +78,6 @@ export class SingboxManager {
     this.schema = startRequest.schema;
     this.host = startRequest.host;
     this.port = startRequest.port;
-    this.authorizationToken = startRequest.authorization;
     this.isRemoteSingboxConnected = true;
     this.remoteSingboxStatusChangedBehaviorSubject.next("connected");
     return Promise.resolve();

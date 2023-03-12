@@ -6,11 +6,11 @@
   <span class="add-types">
     <button nz-button nzType="primary" (click)="fileSelectorElement.nativeElement.click()">local file</button>
     <button nz-button nzType="primary" (click)="showAddRemoteFileProfileModal()">remote file</button>
-    <button nz-button nzType="primary" (click)="showAddRemoteConnectionProfileModal()">remote connection</button>
+    <!-- <button nz-button nzType="primary" (click)="showAddRemoteConnectionProfileModal()">remote connection</button> -->
   </span>
 </ng-template>
 <!-- add/update - local file -->
-<input #fileSelector type="file" accept=".yaml,.yml" multiple style="display: none" />
+<input #fileSelector type="file" accept=".json" multiple style="display: none" />
 <nz-modal
   [(nzVisible)]="isLocalFileModalVisible"
   [nzOkLoading]="isLocalFileModalOKLoadding"

@@ -1,6 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { SettingService } from "src/app/core/service/setting.service";
-import { SingboxService } from "src/app/core/service/singbox.service";
 
 @Component({
   selector: "app-setting",
@@ -10,15 +8,7 @@ import { SingboxService } from "src/app/core/service/singbox.service";
 export class SettingComponent implements OnInit {
   version: string | undefined;
 
-  constructor(private singboxService: SingboxService, private settingService: SettingService) {}
+  constructor() {}
 
-  async ngOnInit(): Promise<void> {
-    if (await this.singboxService.isRunningOrConnected()) {
-      this.settingService.getVersion().subscribe({
-        next: (version) => {
-          this.version = version;
-        }
-      });
-    }
-  }
+  async ngOnInit(): Promise<void> {}
 }

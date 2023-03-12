@@ -159,7 +159,8 @@ nz-sider:after {
   }
 }
 
-.platform-win32 {
+.platform-win32,
+.platform-linux {
   .inner-content {
     background: white;
   }

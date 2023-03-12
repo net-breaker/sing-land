@@ -14,6 +14,8 @@ export class SingboxService {
   remoteSingboxStatusChanged$ = this.singboxManager.remoteSingboxStatusChanged$;
   singboxStatusChanged$ = merge(this.localSingboxStatusChanged$, this.remoteSingboxStatusChanged$);
 
+  localSingboxLogs$ = this.singboxManager.localSingboxLogs$;
+
   constructor(private profilesService: ProfilesService, private singboxManager: SingboxManager) {
     this.profilesService.profileSelectedChanged$.subscribe((profile) => {
       if (profile === undefined) {

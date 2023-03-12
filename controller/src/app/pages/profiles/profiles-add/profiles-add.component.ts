@@ -75,7 +75,7 @@ export class ProfilesAddComponent implements OnInit {
       authorization: [null, [Validators.required]]
     });
 
-    this.profilesAddProvider.localProfilesAddObservable.subscribe((files: FileList | undefined) => {
+    this.profilesAddProvider.localProfilesAdd$.subscribe((files: FileList | undefined) => {
       if (files === undefined) return;
       this.pushLocalFileToAddQueue(files);
       this.fetchFromLocalFileQueueThenShowModal();
@@ -164,7 +164,7 @@ export class ProfilesAddComponent implements OnInit {
   }
 
   addLocalFileProfile(): void {
-    const targetPath = path.join(this.profilesService.profilesDirectory, new Date().getTime() + ".yaml");
+    const targetPath = path.join(this.profilesService.profilesDirectory, new Date().getTime() + ".json");
     fs.copyFile(this.localFileProfileForm.value.path, targetPath, (err) => {
       if (err) {
         this.notificationProvider.notification("Failed", "Failed to copy profile file");
