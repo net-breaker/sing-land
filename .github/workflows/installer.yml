@@ -145,3 +145,44 @@ jobs:
           name: singland-linux-amd64
           path: singland-linux-amd64.tar.gz
           if-no-files-found: error
+
+  archive-windows-amd64:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Create temp directory
+        run: mkdir artifacts
+
+      - name: Download basic
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: basic
+          path: artifacts
+
+      - name: Download sing-box
+        run: |
+          wget -O ./artifacts/sing-box.zip https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-windows-amd64.zip
+          unzip ./artifacts/sing-box.zip -d ./artifacts/sing-box
+          mv artifacts/sing-box/**/sing-box artifacts/sing-box/
+
+      - name: Download electron
+        run: |
+          wget -O ./artifacts/electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-win32-x64.zip
+          unzip ./artifacts/electron.zip -d ./electron
+
+      - name: Preparing files
+        run: |
+          rm -rf ./electron/resources/default_app.asar
+          mv ./artifacts/* ./electron/resources/
+
+      - name: Create archive
+        run: |
+          cd electron
+          zip -r ../singland-windows-amd64.zip *
+
+      - name: Publish archive
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: singland-windows-amd64
+          path: singland-windows-amd64.zip
+          if-no-files-found: error

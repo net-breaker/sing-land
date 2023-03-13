@@ -9,7 +9,7 @@ import { LogMonitorService } from "src/app/core/service/monitor-log.service";
   styleUrls: ["./logs.component.scss"]
 })
 export class LogsComponent implements OnInit {
-  level = "INFO";
+  level = "ALL";
   private logsSubscription: Subscription | undefined;
 
   private allLogs: Log[] = [];
