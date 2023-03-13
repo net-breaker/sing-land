@@ -92,6 +92,7 @@ jobs:
       - name: Download sing-box
         run: |
           wget -O ./artifacts/sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
+          mkdir ./artifacts/sing-box
           tar -xvzf ./artifacts/sing-box.tar.gz -C ./artifacts/sing-box
           ls -R artifacts
           mv artifacts/sing-box/**/sing-box artifacts/resources/sing-box/
