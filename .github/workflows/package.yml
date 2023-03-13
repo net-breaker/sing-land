@@ -27,9 +27,7 @@ jobs:
         working-directory: ./controller
 
       - name: Move controller compiled files
-        run: |
-          mv ./controller/dist/controller/* ./singland/controller/
-          cp -r ./controller/resources ./singland/controller/resources
+        run: mv ./controller/dist/controller/* ./singland/controller/
 
       - name: Install dependencies for editor
         run: npm ci
@@ -50,18 +48,18 @@ jobs:
         run: npx asar pack ./ app.asar
         working-directory: ./singland
 
-      - name: Publish asar
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: app
-          path: singland/app.asar
-          if-no-files-found: error
+      - name: Archive basic
+        run: |
+          mkdir .basic
+          mv ./singland/app.asar ./basic/
+          mv ./controller/resources/* ./basic/
+          zip -r basic.zip .basic
 
-      - name: Publish resources
+      - name: Publish basic
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: resources
-          path: controller/resources
+          name: basic
+          path: basic.zip
           if-no-files-found: error
 
   installer-archive:
@@ -73,46 +71,31 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install asar
-        run: npm i -g asar
-
       - name: Create temp directory
         run: mkdir artifacts
 
-      - name: Download asar
+      - name: Download basic
         uses: actions/download-artifact@v2.1.1
         with:
-          name: app
+          name: basic
           path: artifacts
-
-      - name: Download resources
-        uses: actions/download-artifact@v2.1.1
-        with:
-          name: resources
-          path: artifacts/resources
 
       - name: Download sing-box
         run: |
           wget -O ./artifacts/sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
           mkdir ./artifacts/sing-box
           tar -xvzf ./artifacts/sing-box.tar.gz -C ./artifacts/sing-box
-          mv artifacts/sing-box/**/sing-box artifacts/resources/sing-box/
+          mv artifacts/sing-box/**/sing-box artifacts/sing-box/
 
       - name: Download electron
         run: |
           wget -O ./artifacts/electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-linux-x64.zip
           unzip ./artifacts/electron.zip -d ./electron
 
-      - name: Show files
-        run: |
-          ls -R artifacts
-          ls -R electron
-
       - name: Preparing files
         run: |
           rm -rf ./electron/resources/default_app.asar
-          mv ./artifacts/app.asar ./electron/resources/
-          mv ./artifacts/resources ./electron/resources/
+          mv ./artifacts/* ./electron/resources/
 
       - name: Create archive
         run: |
@@ -122,6 +105,6 @@ jobs:
       - name: Publish archive
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: installer
+          name: singland-linux-amd64
           path: singland-linux-amd64.tar.gz
           if-no-files-found: error

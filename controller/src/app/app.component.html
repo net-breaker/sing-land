@@ -1,7 +1,7 @@
 <nz-layout class="app-layout platform-{{ platform }}">
   <nz-sider class="menu-sidebar" nzWidth="180px" nzBreakpoint="md" [nzTrigger]="null">
     <div class="sidebar-logo">
-      <img src="../assets/logo.svg" alt="logo" />
+      <img src="assets/logo.svg" alt="logo" />
       <div class="version">Singland version: {{ version }}</div>
     </div>
     <ul nz-menu nzMode="inline">
@@ -33,10 +33,10 @@
     <div class="traffic {{ status === 'stopped' ? 'hide' : '' }}">
       <div>
         {{ 0 | formatBytes }}/s
-        <img src="../assets/arrow/arrow.png" />
+        <img src="assets/arrow/arrow.png" />
       </div>
       <div>
-        <img src="../assets/arrow/arrow.png" />
+        <img src="assets/arrow/arrow.png" />
         {{ 0 | formatBytes }}/s
       </div>
     </div>
