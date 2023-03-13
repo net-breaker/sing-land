@@ -3,11 +3,15 @@ name: asar
 on: [push, pull_request]
 
 jobs:
-  pack:
+  package:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          lfs: true
+          clean: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v3.5.0
@@ -40,15 +44,63 @@ jobs:
         run: npm i
         working-directory: ./package
 
-      - name: Move resources
-        run: mv controller/resources/* package/resources/
-
       - name: asar
         run: npx asar pack ./ app.asar
         working-directory: ./package
 
       - name: Publish asar
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3.1.2
         with:
-          name: app.asar
+          name: app
           path: package/app.asar
+          if-no-files-found: error
+
+      - name: Publish resources
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: resources
+          path: controller/resources
+          if-no-files-found: error
+
+  installer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 18
+
+      - name: Install asar
+        run: npm i -g asar
+
+      - name: Create temp directory
+        run: mkdir artifacts
+
+      - name: Download asar
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: app
+          path: artifacts
+
+      - name: Download resources
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: resources
+          path: artifacts
+
+      - name: Download sing-box
+        run: |
+          wget -O ./artifacts/sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
+          tar -xvzf ./artifacts/sing-box.tar.gz -C ./artifacts/sing-box
+          mv artifacts/sing-box/sing-box artifacts/resources/sing-box
+
+      - name: Download electron
+        run: |
+          wget -O ./artifacts/electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-linux-x64.zip
+          unzip ./artifacts/electron.zip -d ./electron
+
+      - name: test
+        run: |
+          ls artifacts
+          ls artifacts/sing-box
+          ls artifacts/resources/sing-box
