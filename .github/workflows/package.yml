@@ -128,8 +128,8 @@ jobs:
 
       - name: Preparing files
         run: |
-          rm -rf ./electron/resources/default_app.asar
-          mv ./artifacts/* ./electron/resources/
+          rm -rf ./Electron.app/Contents/Resources/default_app.asar
+          mv ./artifacts/* ./Electron.app/Contents/Resources/
 
       - name: Create archive
         run: |
