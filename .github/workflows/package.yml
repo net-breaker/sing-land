@@ -27,7 +27,7 @@ jobs:
         working-directory: ./controller
 
       - name: Move controller compiled files
-        run: mv ./controller/dist/controller/* ./package/controller/
+        run: mv ./controller/dist/controller/* ./singland/controller/
 
       - name: Install dependencies for editor
         run: npm ci
@@ -38,21 +38,21 @@ jobs:
         working-directory: ./editor
 
       - name: Move editor compiled files
-        run: mv ./editor/dist/editor/* ./package/editor/
+        run: mv ./editor/dist/editor/* ./singland/editor/
 
-      - name: Install dependencies for package
+      - name: Install dependencies for singland
         run: npm i
-        working-directory: ./package
+        working-directory: ./singland
 
       - name: asar
         run: npx asar pack ./ app.asar
-        working-directory: ./package
+        working-directory: ./singland
 
       - name: Publish asar
         uses: actions/upload-artifact@v3.1.2
         with:
           name: app
-          path: package/app.asar
+          path: singland/app.asar
           if-no-files-found: error
 
       - name: Publish resources
@@ -62,7 +62,7 @@ jobs:
           path: controller/resources
           if-no-files-found: error
 
-  installer:
+  installer-archive:
     runs-on: ubuntu-latest
     needs: package
     steps:
@@ -94,7 +94,6 @@ jobs:
           wget -O ./artifacts/sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
           mkdir ./artifacts/sing-box
           tar -xvzf ./artifacts/sing-box.tar.gz -C ./artifacts/sing-box
-          ls -R artifacts
           mv artifacts/sing-box/**/sing-box artifacts/resources/sing-box/
 
       - name: Download electron
@@ -102,8 +101,18 @@ jobs:
           wget -O ./artifacts/electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-linux-x64.zip
           unzip ./artifacts/electron.zip -d ./electron
 
-      - name: test
+      - name: Show files
         run: |
-          ls artifacts
-          ls artifacts/sing-box
-          ls artifacts/resources/sing-box
+          ls -R artifacts
+          ls -R electron
+
+      - name: Preparing files
+        run: |
+          rm -rf ./electron/resources/default_app.asar
+          mv ./artifacts/app.asar ./electron/resources/
+          mv ./artifacts/resources ./electron/resources/
+
+      - name: Create archive
+        run: |
+          cd electron
+          tar -czvf ../singland-linux-amd64.tar.gz *
