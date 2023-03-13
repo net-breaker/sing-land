@@ -27,7 +27,9 @@ jobs:
         working-directory: ./controller
 
       - name: Move controller compiled files
-        run: mv ./controller/dist/controller/* ./singland/controller/
+        run: |
+          mv ./controller/dist/controller/* ./singland/controller/
+          cp -r ./controller/resources ./singland/controller/resources
 
       - name: Install dependencies for editor
         run: npm ci
