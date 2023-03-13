@@ -87,7 +87,7 @@ jobs:
         uses: actions/download-artifact@v2.1.1
         with:
           name: resources
-          path: artifacts
+          path: artifacts/resources
 
       - name: Download sing-box
         run: |
