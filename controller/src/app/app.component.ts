@@ -67,23 +67,23 @@ export class AppComponent {
    * set window to always on top
    */
   alwaysOnTop(): void {
-    ipcRenderer.invoke("window", "affix");
+    ipcRenderer.invoke("window", "controller", "affix");
     this.isAlwaysOnTop = !this.isAlwaysOnTop;
   }
 
   minimize(): void {
-    ipcRenderer.invoke("window", "minimize");
+    ipcRenderer.invoke("window", "controller", "minimize");
   }
 
   maximize(): void {
-    ipcRenderer.invoke("window", "maximize");
+    ipcRenderer.invoke("window", "controller", "maximize");
   }
 
   unmaximize(): void {
-    ipcRenderer.invoke("window", "unmaximize");
+    ipcRenderer.invoke("window", "controller", "unmaximize");
   }
 
   exit(): void {
-    ipcRenderer.invoke("window", "close");
+    ipcRenderer.invoke("window", "controller", "close");
   }
 }

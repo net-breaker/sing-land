@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ipcRenderer } from "electron";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { NotificationProvider } from "src/app/core/provider/notification.provider";
-import { ProfilesService } from "src/app/core/service/profiles.service";
+import { FileProfile, ProfilesService } from "src/app/core/service/profiles.service";
 import { ProfilesAddProvider } from "./profiles-add/profiles-add.provider";
 
 @Component({
@@ -95,13 +95,14 @@ export class ProfilesComponent implements OnInit {
 
   handleContextMenu(): void {
     ipcRenderer.on("profiles", (event, operator, profileName) => {
+      const profile = this.profilesService.getProfileByName(profileName);
       switch (operator) {
         case "edit":
-          const profile = this.profilesService.getProfileByName(profileName);
           profile && this.profilesAddProvider.editProfile(profile);
           break;
         case "coder":
-          // TODO open coder
+          const file = profile as FileProfile;
+          ipcRenderer.invoke("window", "controller", "coder", file.path);
           break;
         case "sync":
           this.profilesService

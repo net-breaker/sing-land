@@ -29,7 +29,6 @@ export class LogsComponent implements OnInit {
       if (this.level === "ALL") return true;
       return log.level == this.level;
     });
-    console.log(this.logs);
   }
 
   clear() {

@@ -166,7 +166,7 @@ export class SingboxInfrastructureImpl implements SingboxInfrastructure {
       if (match !== null) {
         const log: Log = {
           level: match[3] as LogLevel,
-          time: match[2]!,
+          time: match[2] ? match[2] : dayjs(Date.now()).locale("zh-cn").format("YYYY-MM-DD HH:mm:ss"),
           message: match[5]
         };
         this.singboxLogsBehaviorSubject.next(log);
@@ -191,7 +191,7 @@ export class SingboxInfrastructureImpl implements SingboxInfrastructure {
           case "FATAL":
             singboxLogger.fatal(log.message);
             this.singboxStatusChangedBehaviorSubject.next("stopping");
-            this.notificationProvider.notification("Singbox Fatal Error", log.message);
+            this.notificationProvider.notification("Error", log.message);
             break;
           default:
             singboxLogger.warn(log.message);

@@ -3,7 +3,9 @@ const contextMenu = require("electron-context-menu");
 
 process.env["NODE_CONFIG_DIR"] = "./resources/config";
 
-let appWindow;
+let controllerWindow;
+let editorWindow;
+
 let isAlwaysOnTop = false;
 
 let browserWindowConfig = {
@@ -41,7 +43,7 @@ let contextMenuConfig = {
       visible: stringEndWith(parameters.titleText, "file") || stringEndWith(parameters.titleText, "connection"),
       click: () => {
         let name = parameters.titleText.substring(0, parameters.titleText.indexOf("\n"));
-        appWindow.webContents.send("profiles", "edit", name);
+        controllerWindow.webContents.send("profiles", "edit", name);
       }
     },
     {
@@ -49,7 +51,7 @@ let contextMenuConfig = {
       visible: stringEndWith(parameters.titleText, "local file") || stringEndWith(parameters.titleText, "remote file"),
       click: () => {
         let name = parameters.titleText.substring(0, parameters.titleText.indexOf("\n"));
-        appWindow.webContents.send("profiles", "coder", name);
+        controllerWindow.webContents.send("profiles", "coder", name);
       }
     },
     {
@@ -57,7 +59,7 @@ let contextMenuConfig = {
       visible: stringEndWith(parameters.titleText, "remote file"),
       click: () => {
         let name = parameters.titleText.substring(0, parameters.titleText.indexOf("\n"));
-        appWindow.webContents.send("profiles", "sync", name);
+        controllerWindow.webContents.send("profiles", "sync", name);
       }
     },
     {
@@ -65,7 +67,7 @@ let contextMenuConfig = {
       visible: stringEndWith(parameters.titleText, "file") || stringEndWith(parameters.titleText, "connection"),
       click: () => {
         let name = parameters.titleText.substring(0, parameters.titleText.indexOf("\n"));
-        appWindow.webContents.send("profiles", "delete", name);
+        controllerWindow.webContents.send("profiles", "delete", name);
       }
     }
   ]
@@ -73,8 +75,8 @@ let contextMenuConfig = {
 
 function createWindow() {
   contextMenu(contextMenuConfig);
-  appWindow = new BrowserWindow(browserWindowConfig);
-  appWindow.loadFile("./controller/index.html");
+  controllerWindow = new BrowserWindow(browserWindowConfig);
+  controllerWindow.loadFile("./controller/index.html");
 }
 
 app.whenReady().then(() => {
@@ -86,27 +88,58 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle("window", async (event, arg) => {
-    switch (arg) {
+  ipcMain.handle("window", async (event, module, action, path) => {
+    let window;
+    switch (module) {
+      case "controller":
+        window = controllerWindow;
+        break;
+      case "editor":
+        window = editorWindow;
+        break;
+    }
+
+    switch (action) {
       case "minimize":
-        appWindow.minimize();
-        appWindow.webContents.send("window", "minimize");
+        window.minimize();
+        window.webContents.send("window", "minimize");
         break;
       case "maximize":
-        appWindow.maximize();
-        appWindow.webContents.send("window", "maximize");
+        window.maximize();
+        window.webContents.send("window", "maximize");
         break;
       case "unmaximize":
-        appWindow.unmaximize();
-        appWindow.webContents.send("window", "unmaximize");
+        window.unmaximize();
+        window.webContents.send("window", "unmaximize");
         break;
       case "affix":
         isAlwaysOnTop = !isAlwaysOnTop;
-        appWindow.setAlwaysOnTop(isAlwaysOnTop);
-        appWindow.webContents.send("window", isAlwaysOnTop ? "affixed" : "unaffix");
+        window.setAlwaysOnTop(isAlwaysOnTop);
+        window.webContents.send("window", isAlwaysOnTop ? "affixed" : "unaffix");
         break;
       case "close":
-        appWindow.close();
+        window.close();
+        break;
+      case "coder":
+        let config = {
+          width: 850,
+          height: 600,
+          minWidth: 850,
+          minHeight: 600,
+          titleBarStyle: "hiddenInset",
+          autoHideMenuBar: false,
+          frame: false,
+          vibrancy: "sidebar",
+          visualEffectState: "followWindow",
+          webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+            webSecurity: false,
+            additionalArguments: [`--path=${path}`]
+          }
+        }
+        editorWindow = new BrowserWindow(config);
+        editorWindow.loadFile("./editor/index.html");
         break;
     }
   });

@@ -53,23 +53,23 @@ export class HeaderComponent implements OnInit {
    * set window to always on top
    */
   alwaysOnTop(): void {
-    ipcRenderer.invoke("window", "affix");
+    ipcRenderer.invoke("window", "editor", "affix");
     this.isAlwaysOnTop = !this.isAlwaysOnTop;
   }
 
   minimize(): void {
-    ipcRenderer.invoke("window", "minimize");
+    ipcRenderer.invoke("window", "editor", "minimize");
   }
 
   maximize(): void {
-    ipcRenderer.invoke("window", "maximize");
+    ipcRenderer.invoke("window", "editor", "maximize");
   }
 
   unmaximize(): void {
-    ipcRenderer.invoke("window", "unmaximize");
+    ipcRenderer.invoke("window", "editor", "unmaximize");
   }
 
   exit(): void {
-    ipcRenderer.invoke("window", "close");
+    ipcRenderer.invoke("window", "editor", "close");
   }
 }
