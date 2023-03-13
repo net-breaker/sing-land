@@ -48,18 +48,17 @@ jobs:
         run: npx asar pack ./ app.asar
         working-directory: ./singland
 
-      - name: Archive basic
+      - name: Create basic
         run: |
           mkdir .basic
           mv ./singland/app.asar ./.basic/
           mv ./controller/resources/* ./.basic/
-          zip -r basic.zip .basic
 
       - name: Publish basic
         uses: actions/upload-artifact@v3.1.2
         with:
           name: basic
-          path: basic.zip
+          path: ./.basic
           if-no-files-found: error
 
   installer-archive:
