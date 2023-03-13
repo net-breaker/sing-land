@@ -1,0 +1,30 @@
+<div class="tools">
+  <nz-radio-group nzSize="small" [(ngModel)]="level" (ngModelChange)="filterLogs()">
+    <label nz-radio-button nzValue="ALL"><span>ALL</span></label>
+    <label nz-radio-button nzValue="INFO"><span>INFO</span></label>
+    <label nz-radio-button nzValue="WARN"><span>WARN</span></label>
+    <label nz-radio-button nzValue="ERROR"><span>ERROR</span></label>
+    <label nz-radio-button nzValue="DEBUG"><span>DEBUG</span></label>
+    <label nz-radio-button nzValue="TRACE"><span>TRACE</span></label>
+    <label nz-radio-button nzValue="FATAL"><span>FATAL</span></label>
+  </nz-radio-group>
+  <i nz-icon nzType="clear" nzTheme="outline" (click)="clear()"></i>
+</div>
+<nz-empty *ngIf="logs.length === 0" nzNotFoundContent="Nothing"></nz-empty>
+<nz-list *ngIf="logs.length !== 0" nzItemLayout="horizontal">
+  <nz-list-item *ngFor="let log of logs">
+    <nz-list-item-meta>
+      <nz-list-item-meta-title>
+        {{ log.message }}
+      </nz-list-item-meta-title>
+    </nz-list-item-meta>
+    <nz-list-item-extra>
+      <div class="matched">
+        {{ log.level }}
+      </div>
+      <div class="time">
+        {{ log.time }}
+      </div>
+    </nz-list-item-extra>
+  </nz-list-item>
+</nz-list>

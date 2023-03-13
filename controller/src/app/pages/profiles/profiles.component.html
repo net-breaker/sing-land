@@ -1,0 +1,13 @@
+<!-- profiles list -->
+<div #list class="profiles {{ dragging ? 'blur' : '' }}">
+  <app-profiles-list></app-profiles-list>
+</div>
+
+<app-profiles-add class="{{ dragging ? 'blur' : '' }}"></app-profiles-add>
+
+<div #drag class="drag {{ dragging ? '' : 'hide' }}">
+  <div>
+    <div>Drop Files here</div>
+    <div>to add local profiles</div>
+  </div>
+</div>

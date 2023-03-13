@@ -5,9 +5,7 @@
   "scripts": {
     "start:ng": "wireit",
     "start:electron": "wireit",
-    "build:ng": "wireit",
-    "before-pack": "wireit",
-    "pack": "wireit"
+    "build:ng": "wireit"
   },
   "wireit": {
     "start:ng": {
@@ -18,18 +16,6 @@
     },
     "build:ng": {
       "command": "ng build --aot --base-href ./"
-    },
-    "before-pack": {
-      "command": "mkdir .package && mv dist/sing-land-editor/* .package/ && cp package.json .package/ && cp main.js .package/",
-      "dependencies": [
-        "build:ng"
-      ]
-    },
-    "pack": {
-      "command": "asar pack .package editor.asar",
-      "dependencies": [
-        "before-pack"
-      ]
     }
   },
   "private": true,
@@ -57,8 +43,7 @@
     "@angular/compiler-cli": "~13.1.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^18.7.13",
-    "asar": "^3.2.0",
-    "electron": "^21.0.1",
+    "electron": "^22.0.2",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",

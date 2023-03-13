@@ -1,0 +1,5 @@
+<div nz-row>
+  <div nz-col nzMd="12" nzLg="8" nzXl="6" *ngFor="let profile of profilesObservable | async; index as i">
+    <app-profiles-item [profile]="profile"></app-profiles-item>
+  </div>
+</div>

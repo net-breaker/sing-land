@@ -1,0 +1,144 @@
+name: asar
+
+on: [push, pull_request]
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          lfs: true
+          clean: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 18
+
+      - name: Install dependencies for controller
+        run: npm ci
+        working-directory: ./controller
+
+      - name: Build controller
+        run: npm run build:ng
+        working-directory: ./controller
+
+      - name: Move controller compiled files
+        run: mv ./controller/dist/controller/* ./singland/controller/
+
+      - name: Install dependencies for editor
+        run: npm ci
+        working-directory: ./editor
+
+      - name: Build editor
+        run: npm run build:ng
+        working-directory: ./editor
+
+      - name: Move editor compiled files
+        run: mv ./editor/dist/editor/* ./singland/editor/
+
+      - name: Install dependencies for singland
+        run: npm i
+        working-directory: ./singland
+
+      - name: asar
+        run: npx asar pack ./ app.asar
+        working-directory: ./singland
+
+      - name: Create basic
+        run: |
+          mkdir .basic
+          mv ./singland/app.asar ./.basic/
+          mv ./controller/resources/* ./.basic/
+
+      - name: Publish basic
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: basic
+          path: ./.basic
+          if-no-files-found: error
+
+  archive-darwin-arm64:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Create temp directory
+        run: mkdir artifacts
+
+      - name: Download basic
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: basic
+          path: artifacts
+
+      - name: Download sing-box
+        run: |
+          wget -O ./artifacts/sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-darwin-arm64.tar.gz
+          tar -xvzf ./artifacts/sing-box.tar.gz -C ./artifacts/sing-box
+          mv artifacts/sing-box/**/sing-box artifacts/sing-box/
+
+      - name: Download electron
+        run: |
+          wget -O ./artifacts/electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-darwin-arm64.zip
+          unzip ./artifacts/electron.zip -d ./electron
+
+      - name: Preparing files
+        run: |
+          rm -rf ./electron/Electron.app/Contents/Resources/default_app.asar
+          mv ./artifacts/* ./electron/Electron.app/Contents/Resources/
+
+      - name: Create archive
+        run: |
+          cd electron
+          tar -czvf ../singland-darwin-arm64.tar.gz *
+
+      - name: Publish archive
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: singland-darwin-arm64
+          path: singland-darwin-arm64.tar.gz
+          if-no-files-found: error
+
+  archive-linux-amd64:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Create temp directory
+        run: mkdir artifacts
+
+      - name: Download basic
+        uses: actions/download-artifact@v2.1.1
+        with:
+          name: basic
+          path: artifacts
+
+      - name: Download sing-box
+        run: |
+          wget -O ./artifacts/sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
+          tar -xvzf ./artifacts/sing-box.tar.gz -C ./artifacts/sing-box
+          mv artifacts/sing-box/**/sing-box artifacts/sing-box/
+
+      - name: Download electron
+        run: |
+          wget -O ./artifacts/electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-linux-x64.zip
+          unzip ./artifacts/electron.zip -d ./electron
+
+      - name: Preparing files
+        run: |
+          rm -rf ./electron/resources/default_app.asar
+          mv ./artifacts/* ./electron/resources/
+
+      - name: Create archive
+        run: |
+          cd electron
+          tar -czvf ../singland-linux-amd64.tar.gz *
+
+      - name: Publish archive
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: singland-linux-amd64
+          path: singland-linux-amd64.tar.gz
+          if-no-files-found: error

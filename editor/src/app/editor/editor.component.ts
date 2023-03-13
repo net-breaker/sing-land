@@ -52,7 +52,7 @@ export class EditorComponent implements OnInit {
           // if clicked is not cancel button,then close the window
           if (!result.isDismissed) {
             this.fileContentChanged = false;
-            ipcRenderer.invoke("window", "close");
+            ipcRenderer.invoke("window", "editor", "close");
           }
         });
         event.returnValue = false;

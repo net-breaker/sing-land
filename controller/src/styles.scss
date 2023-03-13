@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+  border: 1px solid #d7d7d7;
+  overflow-y: hidden;
+}
+
+body {
+  background: transparent;
+  overflow-y: hidden;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 1px;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.4);
+  background: #ebebeb;
+}
+
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: #fff;
+}

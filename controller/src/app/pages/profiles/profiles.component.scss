@@ -1,0 +1,52 @@
+.drag {
+  height: calc(100% - 42px);
+  width: calc(100% - 182px);
+  display: table;
+  text-align: center;
+  background: rgb(167 167 167 / 70%);
+  box-shadow: 0 0 13px -5px;
+  position: absolute;
+  margin-top: -24px;
+  margin-left: -24px;
+
+  div {
+    pointer-events: none;
+  }
+
+  > div {
+    display: table-cell;
+    vertical-align: middle;
+
+    div:first-child {
+      font-size: 24px;
+      font-weight: bold;
+      color: #121212;
+      margin-bottom: 10px;
+    }
+
+    div:last-child {
+      font-size: 18px;
+      color: #3c3c3c;
+    }
+  }
+}
+
+.drag.hide {
+  display: none;
+}
+
+.profiles {
+  display: block;
+  position: absolute;
+  margin-top: -24px;
+  margin-left: -24px;
+  width: calc(100% - 182px);
+  height: calc(100% - 42px);
+  padding: 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.blur {
+  filter: blur(2px);
+}

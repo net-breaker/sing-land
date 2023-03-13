@@ -1,0 +1,61 @@
+<nz-layout class="app-layout platform-{{ platform }}">
+  <nz-sider class="menu-sidebar" nzWidth="180px" nzBreakpoint="md" [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <img src="assets/logo.svg" alt="logo" />
+      <div class="version">Singland version: {{ version }}</div>
+    </div>
+    <ul nz-menu nzMode="inline">
+      <li nz-menu-item nzMatchRouter>
+        <i nz-icon nzType="group" nzTheme="outline"></i>
+        <span>
+          <a routerLink="/profiles">Profiles</a>
+        </span>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <i nz-icon nzType="history" nzTheme="outline"></i>
+        <span>
+          <a routerLink="/logs">Logs</a>
+        </span>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <i nz-icon nzType="setting" nzTheme="outline"></i>
+        <span>
+          <a routerLink="/setting">Setting</a>
+        </span>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <i nz-icon nzType="info-circle" nzTheme="outline"></i>
+        <span>
+          <a routerLink="/about">About</a>
+        </span>
+      </li>
+    </ul>
+    <div class="traffic {{ status === 'stopped' ? 'hide' : '' }}">
+      <div>
+        {{ 0 | formatBytes }}/s
+        <img src="assets/arrow/arrow.png" />
+      </div>
+      <div>
+        <img src="assets/arrow/arrow.png" />
+        {{ 0 | formatBytes }}/s
+      </div>
+    </div>
+  </nz-sider>
+  <nz-layout>
+    <nz-header *ngIf="platform !== 'darwin'">
+      <div class="app-header">
+        <i nz-icon nzType="pushpin" nzTheme="outline" *ngIf="!isAlwaysOnTop" (click)="alwaysOnTop()"></i>
+        <i nz-icon nzType="pushpin" nzTheme="fill" *ngIf="isAlwaysOnTop" (click)="alwaysOnTop()"></i>
+        <i nz-icon nzType="minus" nzTheme="outline" (click)="minimize()"></i>
+        <i nz-icon nzType="fullscreen" nzTheme="outline" *ngIf="!isMaximize" (click)="maximize()"></i>
+        <i nz-icon nzType="fullscreen-exit" nzTheme="outline" *ngIf="isMaximize" (click)="unmaximize()"></i>
+        <i nz-icon nzType="close" nzTheme="outline" (click)="exit()"></i>
+      </div>
+    </nz-header>
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
