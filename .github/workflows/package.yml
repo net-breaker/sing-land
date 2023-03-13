@@ -40,6 +40,9 @@ jobs:
         run: npm i
         working-directory: ./package
 
+      - name: Move resources
+        run: mv controller/resources/* package/resources/
+
       - name: asar
         run: npx asar pack ./ app.asar
         working-directory: ./package
