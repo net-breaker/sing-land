@@ -166,7 +166,7 @@ jobs:
         run: |
           wget -O ./artifacts/sing-box.zip https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-windows-amd64.zip
           unzip ./artifacts/sing-box.zip -d ./artifacts/sing-box
-          mv artifacts/sing-box/**/sing-box artifacts/sing-box/
+          mv artifacts/sing-box/**/sing-box.exe artifacts/sing-box/
 
       - name: Download electron
         run: |
