@@ -51,8 +51,8 @@ jobs:
       - name: Archive basic
         run: |
           mkdir .basic
-          mv ./singland/app.asar ./basic/
-          mv ./controller/resources/* ./basic/
+          mv ./singland/app.asar ./.basic/
+          mv ./controller/resources/* ./.basic/
           zip -r basic.zip .basic
 
       - name: Publish basic
