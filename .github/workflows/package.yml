@@ -14,10 +14,6 @@ jobs:
         with:
           node-version: 18
 
-      - name: Show versions
-        run: node --version; npm --version
-        working-directory: ./controller
-
       - name: Install dependencies for controller
         run: npm ci
         working-directory: ./controller
@@ -45,7 +41,7 @@ jobs:
         working-directory: ./package
 
       - name: asar
-        run: npx asar pack ./ package.asar
+        run: npx asar pack ./ app.asar
         working-directory: ./package
 
       - name: Publish asar
