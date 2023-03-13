@@ -1,0 +1,55 @@
+name: asar
+
+on: [push, pull_request]
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 18
+
+      - name: Show versions
+        run: node --version; npm --version
+        working-directory: ./controller
+
+      - name: Install dependencies for controller
+        run: npm ci
+        working-directory: ./controller
+
+      - name: Build controller
+        run: npm run build:ng
+        working-directory: ./controller
+
+      - name: Move controller compiled files
+        run: mv ./controller/dist/controller/* ./package/controller/
+
+      - name: Install dependencies for editor
+        run: npm ci
+        working-directory: ./editor
+
+      - name: Build editor
+        run: npm run build:ng
+        working-directory: ./editor
+
+      - name: Move editor compiled files
+        run: mv ./editor/dist/editor/* ./package/editor/
+
+      - name: Install dependencies for package
+        run: npm i
+        working-directory: ./package
+
+      - name: asar
+        run: npx asar pack ./ package.asar
+        working-directory: ./package
+
+      - name: Publish asar
+        uses: actions/upload-artifact@v2
+        with:
+          name: app.asar
+          path: package/app.asar

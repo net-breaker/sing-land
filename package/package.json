@@ -4,5 +4,8 @@
   "main": "main.js",
   "dependencies": {
     "electron-context-menu": "^3.5.0"
+  },
+  "devDependencies": {
+    "asar": "^3.2.0"
   }
 }

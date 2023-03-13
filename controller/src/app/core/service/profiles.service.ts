@@ -190,8 +190,8 @@ export class ProfilesService {
         profiles.splice(index, 1);
         this.settingManager.set("profile.all", profiles);
         this.profilesBehaviorSubject.next(profiles);
-        if(this.selectedProfile === undefined) {
-          this.logger.info("The selected profile has been deleted, will shutdown singbox process or disconnect remote singbox");
+        if (this.selectedProfile === undefined) {
+          this.logger.info("The selected profile has been deleted, will shutdown sing-box process or disconnect remote sing-box");
           this.profileSelectedChangedBehaviorSubject.next(undefined);
         }
         resolve();
@@ -203,33 +203,34 @@ export class ProfilesService {
 
   saveProfileFromRemote(url: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.httpClient.get(url, { responseType: "blob" }).pipe(
-        timeout(this.syncProfileFromRemoteTimeout)
-      ).subscribe({
-        next: (blob) => {
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            const content = event.target?.result;
-            if (content === null) {
-              reject(new Error("Read file error"));
-              return;
-            }
-            const absolutePath = path.join(this.configManager.profilesDirectory, new Date().getTime() + ".json");
-            const array = new Uint8Array(content as ArrayBuffer);
-            fs.writeFile(absolutePath, array, (err) => {
-              if (err) {
-                reject(err);
+      this.httpClient
+        .get(url, { responseType: "blob" })
+        .pipe(timeout(this.syncProfileFromRemoteTimeout))
+        .subscribe({
+          next: (blob) => {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+              const content = event.target?.result;
+              if (content === null) {
+                reject(new Error("Read file error"));
                 return;
               }
-              resolve(absolutePath);
-            });
-          };
-          reader.readAsArrayBuffer(blob);
-        },
-        error: (err) => {
-          reject(err);
-        }
-      });
+              const absolutePath = path.join(this.configManager.profilesDirectory, new Date().getTime() + ".json");
+              const array = new Uint8Array(content as ArrayBuffer);
+              fs.writeFile(absolutePath, array, (err) => {
+                if (err) {
+                  reject(err);
+                  return;
+                }
+                resolve(absolutePath);
+              });
+            };
+            reader.readAsArrayBuffer(blob);
+          },
+          error: (err) => {
+            reject(err);
+          }
+        });
     });
   }
 
