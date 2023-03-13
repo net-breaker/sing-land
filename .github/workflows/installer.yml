@@ -1,6 +1,9 @@
-name: asar
+name: installer
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   package:
