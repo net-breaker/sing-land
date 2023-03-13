@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const contextMenu = require("electron-context-menu");
 
-process.env["NODE_CONFIG_DIR"] = "./config";
+process.env["NODE_CONFIG_DIR"] = "./resources/config";
 
 let controllerWindow;
 let editorWindow;
