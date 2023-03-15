@@ -1,0 +1,27 @@
+{
+  "asar": false,
+  "directories": {
+    "output": "release/"
+  },
+  "files": [
+    "./controller",
+    "./editor",
+    "./node_modules",
+    "package.json",
+    "main.js"
+  ],
+  "extraResources": [
+    {
+      "from": "./resources/config",
+      "to": "./config"
+    },
+    {
+      "from": "./resources/sing-box",
+      "to": "./sing-box"
+    }
+  ],
+  "linux": {
+    "icon": "dist/assets/icons",
+    "target": ["tar.gz"]
+  }
+}
