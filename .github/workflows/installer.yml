@@ -54,8 +54,12 @@ jobs:
           path: ./editor/dist/editor
           if-no-files-found: error
 
-  linux-arm64:
-    runs-on: ubuntu-latest
+  linux-installer:
+    name: Build installer on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
     needs: package
     steps:
       - name: Checkout

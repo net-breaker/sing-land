@@ -1,5 +1,5 @@
 {
-  "asar": false,
+  "asar": true,
   "directories": {
     "output": "release/"
   },
@@ -23,6 +23,16 @@
   "linux": {
     "icon": "icons/logo.png",
     "category": "Network",
-    "target": ["deb", "rpm", "tar.gz", "AppImage"]
+    "target": ["deb", "rpm", "tar.gz"]
+  },
+  "mac": {
+    "icon": "icons/logo.png",
+    "category": "public.app-category.productivity",
+    "darkModeSupport": true,
+    "target": ["dmg", "tar.gz"]
+  },
+  "win": {
+    "icon": "icons/logo.png",
+    "target": ["nsis", "zip"]
   }
 }

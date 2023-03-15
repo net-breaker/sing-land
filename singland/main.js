@@ -1,7 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const contextMenu = require("electron-context-menu");
+const fs = require("fs");
 
-process.env["NODE_CONFIG_DIR"] = "./resources/config";
+setEnvironment()
 
 let controllerWindow;
 let editorWindow;
@@ -147,4 +148,20 @@ app.whenReady().then(() => {
 
 function stringEndWith(str, suffix) {
   return str.indexOf(suffix, str.length - suffix.length) !== -1;
+}
+
+
+function setEnvironment() {
+  let NODE_CONFIG_DIR = "";
+
+  const exsitOnOpt = fs.existsSync("/opt/singland/resources/config");
+  if (exsitOnOpt) NODE_CONFIG_DIR = "/opt/singland/resources/config";
+  const exsitOnLinuxWorkspace = fs.existsSync("./resources/config");
+  if (exsitOnLinuxWorkspace) NODE_CONFIG_DIR = "./resources/config";
+  const exsitOnMacWorkspace = fs.existsSync("../Resources/config");
+  if (exsitOnMacWorkspace) NODE_CONFIG_DIR = "../Resources/config";
+  
+  process.env["NODE_CONFIG_DIR"] = NODE_CONFIG_DIR;
+  if (NODE_CONFIG_DIR === "") console.error("environment variable NODE_CONFIG_DIR is not set");
+  console.log("set environment variable NODE_CONFIG_DIR: " + NODE_CONFIG_DIR);
 }
