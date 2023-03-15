@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'sing-land-editor'`, () => {
+  it(`should have as title 'editor'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('sing-land-editor');
+    expect(app.title).toEqual('editor');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('sing-land-editor app is running!');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('editor app is running!');
   });
 });

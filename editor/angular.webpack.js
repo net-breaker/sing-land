@@ -1,8 +1,18 @@
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+const path = require("path");
+
+const MONACO_DIR = path.join(__dirname, "node_modules/monaco-editor");
 
 module.exports = {
   target: "electron-renderer",
-  plugins: [
-    new MonacoWebpackPlugin()
-  ]
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        include: MONACO_DIR,
+        use: ["css-loader"]
+      }
+    ]
+  },
+  plugins: [new MonacoWebpackPlugin()]
 };

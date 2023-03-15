@@ -53,8 +53,8 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle("window", async (event, arg) => {
-    switch (arg) {
+  ipcMain.handle("window", async (event, module, action, path) => {
+    switch (action) {
       case "minimize":
         appWindow.minimize();
         appWindow.webContents.send("window", "minimize");
