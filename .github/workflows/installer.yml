@@ -96,8 +96,8 @@ jobs:
 
       - name: Preparing files
         run: |
-          mv ./artifacts/controller ./singland/controller
-          mv ./artifacts/editor ./singland/editor
+          mv ./artifacts/controller/* ./singland/controller
+          mv ./artifacts/editor/* ./singland/editor
           mv ./controller/resources ./singland/resources
 
       - name: Install dependencies for singland
