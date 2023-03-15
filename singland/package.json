@@ -2,7 +2,9 @@
   "name": "singland",
   "version": "1.0.0",
   "description": "A GUI for sing-box",
-  "author": "anonysoul",
+  "homepage": "https://github.com/net-breaker/sing-land",
+  "repository": "https://github.com/net-breaker/sing-land",
+  "author": "anonysoul <i@anonysoul.com>",
   "main": "main.js",
   "scripts": {
     "build": "electron-builder build"

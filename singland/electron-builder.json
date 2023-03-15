@@ -21,7 +21,8 @@
     }
   ],
   "linux": {
-    "icon": "dist/assets/icons",
-    "target": ["tar.gz"]
+    "icon": "icons/logo.png",
+    "category": "Network",
+    "target": ["deb", "rpm", "tar.gz", "AppImage"]
   }
 }
