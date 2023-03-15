@@ -38,5 +38,3 @@ testem.log
 Thumbs.db
 
 .wireit
-.package
-editor.asar
