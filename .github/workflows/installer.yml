@@ -98,7 +98,7 @@ jobs:
         run: |
           mv ./artifacts/controller ./singland/controller
           mv ./artifacts/editor ./singland/editor
-          mv ./contronller/resources ./singland/resources
+          mv ./controller/resources ./singland/resources
 
       - name: Install dependencies for singland
         run: npm ci
