@@ -95,7 +95,7 @@ app.whenReady().then(() => {
     }
   });
 
-  ipcMain.handle("window", async (event, action, path) => {
+  ipcMain.handle("window", async (event, module, action, path) => {
     switch (action) {
       case "minimize":
         appWindow.minimize();

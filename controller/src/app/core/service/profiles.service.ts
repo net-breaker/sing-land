@@ -2,7 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as chokidar from "chokidar";
 import fs from "fs";
-import * as yaml from "js-yaml";
 import { getLogger } from "log4js";
 import path from "path";
 import { BehaviorSubject, interval, timeout } from "rxjs";
@@ -108,35 +107,35 @@ export class ProfilesService {
     this.profileSelectedChangedBehaviorSubject.next(profile);
   }
 
-  verifyProfile(profile: Profile): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (profile.type === "file") {
-        const fileProfile = profile as FileProfile;
-        if (!fs.existsSync(fileProfile.path)) {
-          reject(new Error("File not found"));
-          return;
-        }
-        const content = fs.readFileSync(fileProfile.path, "utf-8");
-        try {
-          yaml.load(content);
-          resolve();
-        } catch (err: any) {
-          // err instanceof yaml.YAMLException
-          const message = err.message.split("\n")[0];
-          reject(new Error(message));
-        }
-      } else {
-        const remoteProfile = profile as RemoteProfile;
-        this.testRemoteConnection(remoteProfile.schema, remoteProfile.host, remoteProfile.port, remoteProfile.authorization)
-          .then(() => {
-            resolve();
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      }
-    });
-  }
+  // verifyProfile(profile: Profile): Promise<void> {
+  //   return new Promise((resolve, reject) => {
+  //     if (profile.type === "file") {
+  //       const fileProfile = profile as FileProfile;
+  //       if (!fs.existsSync(fileProfile.path)) {
+  //         reject(new Error("File not found"));
+  //         return;
+  //       }
+  //       const content = fs.readFileSync(fileProfile.path, "utf-8");
+  //       try {
+  //         yaml.load(content);
+  //         resolve();
+  //       } catch (err: any) {
+  //         // err instanceof yaml.YAMLException
+  //         const message = err.message.split("\n")[0];
+  //         reject(new Error(message));
+  //       }
+  //     } else {
+  //       const remoteProfile = profile as RemoteProfile;
+  //       this.testRemoteConnection(remoteProfile.schema, remoteProfile.host, remoteProfile.port, remoteProfile.authorization)
+  //         .then(() => {
+  //           resolve();
+  //         })
+  //         .catch((err) => {
+  //           reject(err);
+  //         });
+  //     }
+  //   });
+  // }
 
   existsName(name: string): boolean {
     return this.getProfiles().some((profile) => profile.name === name);
@@ -217,7 +216,7 @@ export class ProfilesService {
               }
               const absolutePath = path.join(this.configManager.profilesDirectory, new Date().getTime() + ".json");
               const array = new Uint8Array(content as ArrayBuffer);
-              fs.writeFile(absolutePath, array, (err) => {
+              fs.writeFile(absolutePath, array, (err: any) => {
                 if (err) {
                   reject(err);
                   return;
