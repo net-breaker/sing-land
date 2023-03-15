@@ -93,12 +93,14 @@ jobs:
           path: artifacts/editor
 
       - name: Download sing-box
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
         run: |
           wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
           tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
           mv artifacts/sing-box/**/sing-box controller/resources/sing-box
 
       - name: Preparing files
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
         run: |
           mv ./artifacts/controller/* ./singland/controller
           mv ./artifacts/editor/* ./singland/editor
