@@ -54,7 +54,7 @@ jobs:
           path: ./editor/dist/editor
           if-no-files-found: error
 
-  linux-installer:
+  installer:
     name: Build installer on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -93,11 +93,26 @@ jobs:
           path: artifacts/editor
 
       - name: Download sing-box
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
+        if: matrix.os == 'ubuntu-latest'
         run: |
           wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
           tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
           mv artifacts/sing-box/**/sing-box controller/resources/sing-box
+
+      - name: Download sing-box
+        if: matrix.os == 'macOS-latest'
+        run: |
+          wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-darwin-amd64.tar.gz
+          tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
+          mv artifacts/sing-box/**/sing-box controller/resources/sing-box
+
+      - name: Download sing-box
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Invoke-RestMethod -Uri https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-windows-amd64.zip -OutFile sing-box.zip
+          Expand-Archive .\sing-box.zip -DestinationPath .\artifacts\sing-box
+          Move-Item -Path .\artifacts\sing-box\**\sing-box.exe -Destination .\controller\resources\sing-box\
 
       - name: Preparing files
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
@@ -105,6 +120,13 @@ jobs:
           mv ./artifacts/controller/* ./singland/controller
           mv ./artifacts/editor/* ./singland/editor
           mv ./controller/resources ./singland/resources
+
+      - name: Preparing files
+        if: matrix.os == 'windows-latest'
+        run: |
+          Move-Item -Path .\artifacts\controller\* -Destination .\singland\controller
+          Move-Item -Path .\artifacts\editor\* -Destination .\singland\editor
+          Move-Item -Path .\controller\resources -Destination .\singland\resources
 
       - name: Install dependencies for singland
         run: npm ci
@@ -114,9 +136,9 @@ jobs:
         run: npm run build
         working-directory: ./singland
 
-      - name: Publish
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: installer
-          path: ./singland/release/singland-1.0.0.tar.gz
-          if-no-files-found: error
+      # - name: Publish
+      #   uses: actions/upload-artifact@v3.1.2
+      #   with:
+      #     name: installer
+      #     path: ./singland/release/singland-1.0.0.tar.gz
+      #     if-no-files-found: error

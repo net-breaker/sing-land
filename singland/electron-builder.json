@@ -21,18 +21,18 @@
     }
   ],
   "linux": {
-    "icon": "icons/logo.png",
+    "icon": "icons/logo-256.png",
     "category": "Network",
     "target": ["deb", "rpm", "tar.gz"]
   },
   "mac": {
-    "icon": "icons/logo.png",
+    "icon": "icons/logo-512.png",
     "category": "public.app-category.productivity",
     "darkModeSupport": true,
     "target": ["dmg", "tar.gz"]
   },
   "win": {
-    "icon": "icons/logo.png",
+    "icon": "icons/logo-256.png",
     "target": ["nsis", "zip"]
   }
 }
