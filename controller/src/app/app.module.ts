@@ -1,6 +1,6 @@
 import { registerLocaleData } from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
-import zh from "@angular/common/locales/zh";
+import en from "@angular/common/locales/en";
 import { APP_INITIALIZER, NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
@@ -20,7 +20,7 @@ import { LogsModule } from "./pages/logs/logs.module";
 import { ProfilesModule } from "./pages/profiles/profiles.module";
 import { PipeModule } from "./pipe/pipe.module";
 
-registerLocaleData(zh);
+registerLocaleData(en);
 
 @NgModule({
   declarations: [AppComponent],
