@@ -92,21 +92,21 @@ jobs:
           name: angular-editor
           path: artifacts/editor
 
-      - name: Download sing-box
+      - name: Download sing-box for Linux
         if: matrix.os == 'ubuntu-latest'
         run: |
           wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
           tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
           mv artifacts/sing-box/**/sing-box controller/resources/sing-box
 
-      - name: Download sing-box
+      - name: Download sing-box for Mac
         if: matrix.os == 'macOS-latest'
         run: |
           wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-darwin-amd64.tar.gz
           tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
           mv artifacts/sing-box/**/sing-box controller/resources/sing-box
 
-      - name: Download sing-box
+      - name: Download sing-box for Windows
         if: matrix.os == 'windows-latest'
         shell: pwsh
         run: |
@@ -136,9 +136,13 @@ jobs:
         run: npm run build
         working-directory: ./singland
 
-      # - name: Publish
-      #   uses: actions/upload-artifact@v3.1.2
-      #   with:
-      #     name: installer
-      #     path: ./singland/release/singland-1.0.0.tar.gz
-      #     if-no-files-found: error
+      - name: Publish
+        uses: actions/upload-artifact@v3.1.2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: installer-linux-amd64
+          path: |
+            ./singland/release/singland-*.tar.gz
+            ./singland/release/singland_*_amd64.deb
+            ./singland/release/singland-*.x86_64.rpm
+          if-no-files-found: error
