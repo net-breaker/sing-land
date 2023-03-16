@@ -161,7 +161,10 @@ function setEnvironment() {
   const exsitOnMacWorkspace = fs.existsSync("../Resources/config");
   if (exsitOnMacWorkspace) NODE_CONFIG_DIR = "../Resources/config";
   
-  process.env["NODE_CONFIG_DIR"] = NODE_CONFIG_DIR;
-  if (NODE_CONFIG_DIR === "") console.error("environment variable NODE_CONFIG_DIR is not set");
-  console.log("set environment variable NODE_CONFIG_DIR: " + NODE_CONFIG_DIR);
+  if (NODE_CONFIG_DIR === "") {
+    console.error("environment variable NODE_CONFIG_DIR is not set");
+  } else {
+    process.env["NODE_CONFIG_DIR"] = NODE_CONFIG_DIR;
+    console.log("set environment variable NODE_CONFIG_DIR: " + NODE_CONFIG_DIR);
+  }
 }

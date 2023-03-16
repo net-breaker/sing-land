@@ -146,3 +146,13 @@ jobs:
             ./singland/release/singland_*_amd64.deb
             ./singland/release/singland-*.x86_64.rpm
           if-no-files-found: error
+
+      - name: Publish installer for Windows
+        uses: actions/upload-artifact@v3.1.2
+        if: matrix.os == 'windows-latest'
+        with:
+          name: installer-linux-amd64
+          path: |
+            ./singland/release/singland*.exe
+            ./singland/release/singland-*-win.zip
+          if-no-files-found: error
