@@ -55,7 +55,7 @@ jobs:
           if-no-files-found: error
 
   installer:
-    name: Build installer on ${{ matrix.os }}
+    name: Compile installer on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -136,7 +136,7 @@ jobs:
         run: npm run build
         working-directory: ./singland
 
-      - name: Publish
+      - name: Publish installer for Linux
         uses: actions/upload-artifact@v3.1.2
         if: matrix.os == 'ubuntu-latest'
         with:
