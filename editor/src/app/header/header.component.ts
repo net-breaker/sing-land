@@ -15,7 +15,11 @@ export class HeaderComponent implements OnInit {
   isMaximize = false;
   isAlwaysOnTop = false;
 
-  constructor(private utilsService: UtilsService, private eventService: EventService) {}
+  module: string;
+
+  constructor(private utilsService: UtilsService, private eventService: EventService) {
+    this.module = "editor:" + this.utilsService.filePath;
+  }
 
   get fileName(): string {
     return path.basename(this.utilsService.filePath);
@@ -53,23 +57,23 @@ export class HeaderComponent implements OnInit {
    * set window to always on top
    */
   alwaysOnTop(): void {
-    ipcRenderer.invoke("window", "editor", "affix");
+    ipcRenderer.invoke("window", this.module, "affix");
     this.isAlwaysOnTop = !this.isAlwaysOnTop;
   }
 
   minimize(): void {
-    ipcRenderer.invoke("window", "editor", "minimize");
+    ipcRenderer.invoke("window", this.module, "minimize");
   }
 
   maximize(): void {
-    ipcRenderer.invoke("window", "editor", "maximize");
+    ipcRenderer.invoke("window", this.module, "maximize");
   }
 
   unmaximize(): void {
-    ipcRenderer.invoke("window", "editor", "unmaximize");
+    ipcRenderer.invoke("window", this.module, "unmaximize");
   }
 
   exit(): void {
-    ipcRenderer.invoke("window", "editor", "close");
+    ipcRenderer.invoke("window", this.module, "close");
   }
 }

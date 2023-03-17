@@ -6,9 +6,9 @@
   "files": [
     "./controller",
     "./editor",
+    "*.js",
     "./node_modules",
-    "package.json",
-    "main.js"
+    "package.json"
   ],
   "extraResources": [
     {

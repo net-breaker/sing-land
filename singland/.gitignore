@@ -1,6 +1,9 @@
+.wireit
 node_modules/
 release/
 
 controller/
 editor/
 resources/
+
+/*.js

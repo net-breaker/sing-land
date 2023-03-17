@@ -151,7 +151,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.2
         if: matrix.os == 'windows-latest'
         with:
-          name: installer-linux-amd64
+          name: installer-windows-amd64
           path: |
             ./singland/release/singland*.exe
             ./singland/release/singland-*-win.zip
