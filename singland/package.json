@@ -13,7 +13,7 @@
   },
   "wireit": {
     "tsc": {
-      "command": "tsc main.ts; tsc application.ts",
+      "command": "tsc main.ts ; tsc application.ts",
       "remark":"https://github.com/microsoft/TypeScript/issues/911"
     },
     "start": {
