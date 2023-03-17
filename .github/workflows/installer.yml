@@ -147,6 +147,16 @@ jobs:
             ./singland/release/singland-*.x86_64.rpm
           if-no-files-found: error
 
+      - name: Publish installer for Mac
+        uses: actions/upload-artifact@v3.1.2
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          name: installer-mac-amd64
+          path: |
+            ./singland/release/singland-*-mac.tar.gz
+            ./singland/release/singland-*.dmg
+          if-no-files-found: error
+
       - name: Publish installer for Windows
         uses: actions/upload-artifact@v3.1.2
         if: matrix.os == 'windows-latest'
