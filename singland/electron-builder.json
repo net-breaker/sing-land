@@ -1,0 +1,38 @@
+{
+  "asar": true,
+  "directories": {
+    "output": "release/"
+  },
+  "files": [
+    "./controller",
+    "./editor",
+    "*.js",
+    "./node_modules",
+    "package.json"
+  ],
+  "extraResources": [
+    {
+      "from": "./resources/config",
+      "to": "./config"
+    },
+    {
+      "from": "./resources/sing-box",
+      "to": "./sing-box"
+    }
+  ],
+  "linux": {
+    "icon": "icons/logo-256.png",
+    "category": "Network",
+    "target": ["deb", "rpm", "tar.gz"]
+  },
+  "mac": {
+    "icon": "icons/logo-512.png",
+    "category": "public.app-category.productivity",
+    "darkModeSupport": true,
+    "target": ["dmg", "tar.gz"]
+  },
+  "win": {
+    "icon": "icons/logo-256.png",
+    "target": ["nsis", "zip"]
+  }
+}

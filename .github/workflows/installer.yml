@@ -32,8 +32,12 @@ jobs:
         run: npm run build:ng
         working-directory: ./controller
 
-      - name: Move controller compiled files
-        run: mv ./controller/dist/controller/* ./singland/controller/
+      - name: Publish controller
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: angular-controller
+          path: ./controller/dist/controller
+          if-no-files-found: error
 
       - name: Install dependencies for editor
         run: npm ci
@@ -43,149 +47,122 @@ jobs:
         run: npm run build:ng
         working-directory: ./editor
 
-      - name: Move editor compiled files
-        run: mv ./editor/dist/editor/* ./singland/editor/
-
-      - name: Install dependencies for singland
-        run: npm i
-        working-directory: ./singland
-
-      - name: asar
-        run: npx asar pack ./ app.asar
-        working-directory: ./singland
-
-      - name: Create basic
-        run: |
-          mkdir .basic
-          mv ./singland/app.asar ./.basic/
-          mv ./controller/resources/* ./.basic/
-
-      - name: Publish basic
+      - name: Publish editor
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: basic
-          path: ./.basic
+          name: angular-editor
+          path: ./editor/dist/editor
           if-no-files-found: error
 
-  archive-darwin-arm64:
-    runs-on: ubuntu-latest
+  installer:
+    name: Compile installer on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
     needs: package
     steps:
-      - name: Create temp directory
-        run: mkdir artifacts
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          lfs: true
+          clean: true
 
-      - name: Download basic
+      - name: Setup Node.js
+        uses: actions/setup-node@v3.5.0
+        with:
+          node-version: 18
+
+      - name: Create temp directory
+        run: |
+          mkdir -p artifacts/controller
+          mkdir -p artifacts/editor
+          mkdir -p artifacts/sing-box
+
+      - name: Download angular-controller
         uses: actions/download-artifact@v2.1.1
         with:
-          name: basic
-          path: artifacts
+          name: angular-controller
+          path: artifacts/controller
 
-      - name: Download sing-box
-        run: |
-          wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-darwin-arm64.tar.gz
-          tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
-          mv artifacts/sing-box/**/sing-box artifacts/sing-box/
-
-      - name: Download electron
-        run: |
-          wget -O ./electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-darwin-arm64.zip
-          unzip ./electron.zip -d ./electron
-
-      - name: Preparing files
-        run: |
-          rm -rf ./electron/Electron.app/Contents/Resources/default_app.asar
-          mv ./artifacts/* ./electron/Electron.app/Contents/Resources/
-
-      - name: Create archive
-        run: |
-          cd electron
-          tar -czvf ../singland-darwin-arm64.tar.gz *
-
-      - name: Publish archive
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: singland-darwin-arm64
-          path: singland-darwin-arm64.tar.gz
-          if-no-files-found: error
-
-  archive-linux-amd64:
-    runs-on: ubuntu-latest
-    needs: package
-    steps:
-      - name: Create temp directory
-        run: mkdir artifacts
-
-      - name: Download basic
+      - name: Download angular-editor
         uses: actions/download-artifact@v2.1.1
         with:
-          name: basic
-          path: artifacts
+          name: angular-editor
+          path: artifacts/editor
 
-      - name: Download sing-box
+      - name: Download sing-box for Linux
+        if: matrix.os == 'ubuntu-latest'
         run: |
           wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-linux-amd64.tar.gz
           tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
-          mv artifacts/sing-box/**/sing-box artifacts/sing-box/
+          mv artifacts/sing-box/**/sing-box controller/resources/sing-box
 
-      - name: Download electron
+      - name: Download sing-box for Mac
+        if: matrix.os == 'macOS-latest'
         run: |
-          wget -O ./electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-linux-x64.zip
-          unzip ./electron.zip -d ./electron
+          wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-darwin-amd64.tar.gz
+          tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
+          mv artifacts/sing-box/**/sing-box controller/resources/sing-box
+
+      - name: Download sing-box for Windows
+        if: matrix.os == 'windows-latest'
+        shell: pwsh
+        run: |
+          Invoke-RestMethod -Uri https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-windows-amd64.zip -OutFile sing-box.zip
+          Expand-Archive .\sing-box.zip -DestinationPath .\artifacts\sing-box
+          Move-Item -Path .\artifacts\sing-box\**\sing-box.exe -Destination .\controller\resources\sing-box\
 
       - name: Preparing files
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
         run: |
-          rm -rf ./electron/resources/default_app.asar
-          mv ./artifacts/* ./electron/resources/
+          mv ./artifacts/controller/* ./singland/controller
+          mv ./artifacts/editor/* ./singland/editor
+          mv ./controller/resources ./singland/resources
 
-      - name: Create archive
+      - name: Preparing files
+        if: matrix.os == 'windows-latest'
         run: |
-          cd electron
-          tar -czvf ../singland-linux-amd64.tar.gz *
+          Move-Item -Path .\artifacts\controller\* -Destination .\singland\controller
+          Move-Item -Path .\artifacts\editor\* -Destination .\singland\editor
+          Move-Item -Path .\controller\resources -Destination .\singland\resources
 
-      - name: Publish archive
+      - name: Install dependencies for singland
+        run: npm ci
+        working-directory: ./singland
+
+      - name: Build
+        run: npm run build
+        working-directory: ./singland
+
+      - name: Publish installer for Linux
         uses: actions/upload-artifact@v3.1.2
+        if: matrix.os == 'ubuntu-latest'
         with:
-          name: singland-linux-amd64
-          path: singland-linux-amd64.tar.gz
+          name: installer-linux-amd64
+          path: |
+            ./singland/release/singland-*.tar.gz
+            ./singland/release/singland_*_amd64.deb
+            ./singland/release/singland-*.x86_64.rpm
           if-no-files-found: error
 
-  archive-windows-amd64:
-    runs-on: ubuntu-latest
-    needs: package
-    steps:
-      - name: Create temp directory
-        run: mkdir artifacts
-
-      - name: Download basic
-        uses: actions/download-artifact@v2.1.1
-        with:
-          name: basic
-          path: artifacts
-
-      - name: Download sing-box
-        run: |
-          wget -O ./sing-box.zip https://github.com/SagerNet/sing-box/releases/download/v1.1.6/sing-box-1.1.6-windows-amd64.zip
-          unzip ./sing-box.zip -d ./artifacts/sing-box
-          mv artifacts/sing-box/**/sing-box.exe artifacts/sing-box/
-
-      - name: Download electron
-        run: |
-          wget -O ./electron.zip https://github.com/electron/electron/releases/download/v22.0.2/electron-v22.0.2-win32-x64.zip
-          unzip ./electron.zip -d ./electron
-
-      - name: Preparing files
-        run: |
-          rm -rf ./electron/resources/default_app.asar
-          mv ./artifacts/* ./electron/resources/
-
-      - name: Create archive
-        run: |
-          cd electron
-          zip -r ../singland-windows-amd64.zip *
-
-      - name: Publish archive
+      - name: Publish installer for Mac
         uses: actions/upload-artifact@v3.1.2
+        if: matrix.os == 'macOS-latest'
         with:
-          name: singland-windows-amd64
-          path: singland-windows-amd64.zip
+          name: installer-mac-amd64
+          path: |
+            ./singland/release/singland-*-mac.tar.gz
+            ./singland/release/singland-*.dmg
+          if-no-files-found: error
+
+      - name: Publish installer for Windows
+        uses: actions/upload-artifact@v3.1.2
+        if: matrix.os == 'windows-latest'
+        with:
+          name: installer-windows-amd64
+          path: |
+            ./singland/release/singland*.exe
+            ./singland/release/singland-*-win.zip
           if-no-files-found: error
