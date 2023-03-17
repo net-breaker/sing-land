@@ -13,7 +13,8 @@
   },
   "wireit": {
     "tsc": {
-      "command": "tsc *.ts"
+      "command": "tsc main.ts; tsc application.ts",
+      "remark":"https://github.com/microsoft/TypeScript/issues/911"
     },
     "start": {
       "command": "electron .",

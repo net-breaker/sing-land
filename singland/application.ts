@@ -204,22 +204,13 @@ export class Application {
   }
 
   private setEnvironment() {
-    let NODE_CONFIG_DIR = "";
+    let NODE_CONFIG_DIR = `${process.resourcesPath}/config`;
 
-    const exsitOnOpt = fs.existsSync("/opt/singland/resources/config");
-    if (exsitOnOpt) NODE_CONFIG_DIR = "/opt/singland/resources/config";
-    const exsitOnLinuxWorkspace = fs.existsSync("./resources/config");
-    if (exsitOnLinuxWorkspace) NODE_CONFIG_DIR = "./resources/config";
-    const exsitOnMacWorkspace = fs.existsSync("../Resources/config");
-    if (exsitOnMacWorkspace) NODE_CONFIG_DIR = "../Resources/config";
+    // development
+    const exsitOnWorkspace = fs.existsSync("./resources/config");
+    if (exsitOnWorkspace) NODE_CONFIG_DIR = "./resources/config";
 
-    if (NODE_CONFIG_DIR === "") {
-      console.error("environment variable NODE_CONFIG_DIR is not set");
-    } else {
-      process.env["NODE_CONFIG_DIR"] = NODE_CONFIG_DIR;
-      console.log(
-        `set environment variable NODE_CONFIG_DIR:${NODE_CONFIG_DIR}`
-      );
-    }
+    process.env["NODE_CONFIG_DIR"] = NODE_CONFIG_DIR;
+    console.log(`export NODE_CONFIG_DIR=${NODE_CONFIG_DIR}`);
   }
 }
