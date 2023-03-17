@@ -149,7 +149,7 @@ jobs:
 
       - name: Publish installer for Mac
         uses: actions/upload-artifact@v3.1.2
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'macOS-latest'
         with:
           name: installer-mac-amd64
           path: |
