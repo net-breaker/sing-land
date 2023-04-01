@@ -15,7 +15,7 @@ nz-spin {
 
 nz-empty {
   margin-left: 0;
-  height: calc(100% - 80px);
+  height: 100%;
   width: 100%;
   padding-top: 150px;
 }
@@ -47,7 +47,7 @@ i:hover {
 nz-list {
   margin-top: 16px;
   overflow-y: auto;
-  height: calc(100% - 80px);
+  height: 100%;
 }
 
 :host ::ng-deep {

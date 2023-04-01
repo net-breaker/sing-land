@@ -102,10 +102,10 @@ export class ProfilesComponent implements OnInit {
           break;
         case "coder":
           const file = profile as FileProfile;
-          ipcRenderer.invoke("window", "controller", "coder", file.path);
+          ipcRenderer.invoke("coder", file.path);
           break;
         case "sync":
-          this.profilesService
+          this.profilesService  
             .syncProfileByName(profileName)
             .then(() => {
               this.notificationProvider.notification("Sync profile success", "success");

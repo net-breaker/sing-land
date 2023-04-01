@@ -7,25 +7,28 @@
   "author": "anonysoul <i@anonysoul.com>",
   "main": "main.js",
   "scripts": {
-    "tsc": "wireit",
+    "init": "wireit",
     "start": "wireit",
     "build": "wireit"
   },
   "wireit": {
-    "tsc": {
-      "command": "tsc main.ts && tsc application.ts",
-      "remark":"https://github.com/microsoft/TypeScript/issues/911"
+    "init": {
+      "command": "cp ../controller/*.js ./ && cp ../editor/*.js ./",
+      "dependencies": [
+        "../controller:tsc",
+        "../editor:tsc"
+      ]
     },
     "start": {
       "command": "electron .",
       "dependencies": [
-        "tsc"
+        "init"
       ]
     },
     "build": {
-      "command": "electron-builder build",
+      "command": "electron-builder build --publish=never",
       "dependencies": [
-        "tsc"
+        "init"
       ]
     }
   },

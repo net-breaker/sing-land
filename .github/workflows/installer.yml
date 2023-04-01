@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: 18
 
+      - uses: google/wireit@setup-github-actions-caching/v1
+
       - name: Install dependencies for controller
         run: npm ci
         working-directory: ./controller
@@ -73,6 +75,8 @@ jobs:
         uses: actions/setup-node@v3.5.0
         with:
           node-version: 18
+
+      - uses: google/wireit@setup-github-actions-caching/v1
 
       - name: Create temp directory
         run: |

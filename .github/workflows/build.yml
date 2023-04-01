@@ -18,6 +18,8 @@ jobs:
         with:
           node-version: 18
 
+      - uses: google/wireit@setup-github-actions-caching/v1
+
       - name: Install dependencies for controller
         run: npm ci
         working-directory: ./controller
@@ -33,7 +35,3 @@ jobs:
       - name: Build editor
         run: npm run build:ng
         working-directory: ./editor
-
-      - name: Install dependencies for singland
-        run: npm i
-        working-directory: ./singland

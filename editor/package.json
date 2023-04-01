@@ -8,11 +8,18 @@
     "build:ng": "wireit"
   },
   "wireit": {
+    "tsc": {
+      "command": "tsc main.ts && tsc editor.ts",
+      "remark": "https://github.com/microsoft/TypeScript/issues/911"
+    },
     "start:ng": {
       "command": "ng serve --port 8020"
     },
     "start:electron": {
-      "command": "echo You need to run the following commands: npx electron . --port 8020 --path=<path>"
+      "command": "echo You need to run the following commands: npx electron . --port 8020 --path=<path>",
+      "dependencies": [
+        "tsc"
+      ]
     },
     "build:ng": {
       "command": "ng build --aot --base-href ./"

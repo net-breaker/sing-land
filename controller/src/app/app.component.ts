@@ -1,5 +1,4 @@
 import { Component } from "@angular/core";
-import { ipcRenderer } from "electron";
 import { platform } from "os";
 import { debounceTime } from "rxjs";
 import { ConfigManager } from "./core/manager/config.manager";
@@ -11,9 +10,6 @@ import { SingboxService } from "./core/service/singbox.service";
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent {
-  isMaximize = false;
-  isAlwaysOnTop = false;
-
   platform: string = "linux";
   version: string = "unknown";
   status: "running" | "stopped" = "stopped";
@@ -43,47 +39,5 @@ export class AppComponent {
       });
   }
 
-  ngOnInit(): void {
-    // there is a delay
-    ipcRenderer.on("window", (event, message) => {
-      switch (message) {
-        case "maximize":
-          this.isMaximize = true;
-          break;
-        case "unmaximize":
-          this.isMaximize = false;
-          break;
-        // case "affixed":
-        //   this.isAlwaysOnTop = true;
-        //   break;
-        // case "unaffix":
-        //   this.isAlwaysOnTop = false;
-        //   break;
-      }
-    });
-  }
-
-  /**
-   * set window to always on top
-   */
-  alwaysOnTop(): void {
-    ipcRenderer.invoke("window", "controller", "affix");
-    this.isAlwaysOnTop = !this.isAlwaysOnTop;
-  }
-
-  minimize(): void {
-    ipcRenderer.invoke("window", "controller", "minimize");
-  }
-
-  maximize(): void {
-    ipcRenderer.invoke("window", "controller", "maximize");
-  }
-
-  unmaximize(): void {
-    ipcRenderer.invoke("window", "controller", "unmaximize");
-  }
-
-  exit(): void {
-    ipcRenderer.invoke("window", "controller", "close");
-  }
+  ngOnInit(): void {}
 }

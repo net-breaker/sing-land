@@ -6,7 +6,6 @@ import * as monaco from "monaco-editor/esm/vs/editor/editor.api.js";
 import * as path from "path";
 import { SweetAlertResult } from "sweetalert2";
 import { AlertService } from "../core/alert.service";
-import { EventService } from "../core/event.service";
 import { UtilsService } from "../core/utils.service";
 
 @Component({
@@ -23,7 +22,7 @@ export class EditorComponent implements OnInit {
   fileContentChanged = false;
   fileWatcher!: chokidar.FSWatcher;
 
-  constructor(utilsService: UtilsService, private eventService: EventService, private alertService: AlertService) {
+  constructor(utilsService: UtilsService, private alertService: AlertService) {
     this.filePath = utilsService.filePath;
     this.fileName = path.basename(this.filePath);
     // watch file changes
@@ -33,14 +32,14 @@ export class EditorComponent implements OnInit {
       if (this.fileName !== path.basename(changedPath)) return;
       if (!this.fileContentChanged) this.reloadFileFromDisk(false, false);
     });
-    // observe tool bar events
-    this.eventService.eventObservable.subscribe((event) => {
-      switch (event) {
-        case "RELOAD_FROM_DISK":
-          this.reloadFileFromDisk(true, true);
-          break;
-        case "SAVE_TO_DISK":
+    // observe events
+    ipcRenderer.on("file", (event, operator) => {
+      switch (operator) {
+        case "save":
           this.saveFileToDisk();
+          break;
+        case "reload":
+          this.reloadFileFromDisk(true, true);
           break;
       }
     });
