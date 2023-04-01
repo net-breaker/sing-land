@@ -7,3 +7,5 @@ editor/
 resources/
 
 /*.js
+controller.ts
+editor.ts

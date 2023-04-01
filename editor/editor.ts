@@ -1,9 +1,4 @@
-import {
-  BrowserWindow,
-  BrowserWindowConstructorOptions,
-  Menu,
-  MenuItem,
-} from "electron";
+import { BrowserWindow, BrowserWindowConstructorOptions, Menu, MenuItem } from "electron";
 
 export class Editor {
   private window?: BrowserWindow;
@@ -20,8 +15,8 @@ export class Editor {
       nodeIntegration: true,
       contextIsolation: false,
       webSecurity: false,
-      additionalArguments: [`--path=${this.filePath}`],
-    },
+      additionalArguments: [`--path=${this.filePath}`]
+    }
   };
 
   constructor(public filePath: string) {}
@@ -40,15 +35,15 @@ export class Editor {
             label: "Save",
             click: () => {
               this.window!.webContents.send("file", "save");
-            },
+            }
           },
           {
             label: "Reolod file from disk",
             click: () => {
               this.window!.webContents.send("file", "reload");
-            },
-          },
-        ],
+            }
+          }
+        ]
       })
     );
     menu.append(
@@ -59,14 +54,22 @@ export class Editor {
             label: "Toggle developer tools",
             click: () => {
               this.window!.webContents.toggleDevTools();
-            },
-          },
-        ],
+            }
+          }
+        ]
       })
     );
 
     this.window = new BrowserWindow(this.windowConfig);
-    this.window.loadFile("./editor/index.html");
+    if (process.argv.indexOf("--port") > -1) {
+      const portIndex = process.argv.indexOf("--port") + 1;
+      const port = process.argv[portIndex];
+      this.window.webContents.openDevTools({ mode: "bottom" });
+      process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
+      this.window.loadURL(`http://localhost:${port}`);
+    } else {
+      this.window.loadFile("./editor/index.html");
+    }
     this.window.setMenu(menu);
     this.window.on("closed", () => {
       this.window = undefined;

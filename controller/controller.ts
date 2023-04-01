@@ -35,7 +35,15 @@ export class Controller {
     }
 
     this.window = new BrowserWindow(this.windowConfig);
-    this.window.loadFile("./controller/index.html");
+    if (process.argv.indexOf("--port") > -1) {
+      const portIndex = process.argv.indexOf("--port") + 1;
+      const port = process.argv[portIndex];
+      this.window.webContents.openDevTools({ mode: "bottom" });
+      process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
+      this.window.loadURL(`http://localhost:${port}`);
+    } else {
+      this.window.loadFile("./controller/index.html");
+    }
     this.setContextMenu();
   }
 
