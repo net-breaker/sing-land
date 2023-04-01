@@ -27,10 +27,10 @@
       ]
     },
     "clean-win": {
-      "command": "echo TODO"
+      "command": "rmdir /s /q controller & rmdir /s /q editor & rmdir /s /q resources & del controller.ts & del editor.ts & exit /b 0"
     },
     "init-win": {
-      "command": "echo TODO",
+      "command": "ROBOCOPY ..\\controller\\dist\\controller .\\controller /E & ROBOCOPY ..\\editor\\dist\\editor .\\editor /E & ROBOCOPY ..\\controller\\resources .\\resources /E & copy ..\\controller\\controller.ts & copy ..\\editor\\editor.ts",
       "dependencies": [
         "clean-win",
         "../controller:tsc",
