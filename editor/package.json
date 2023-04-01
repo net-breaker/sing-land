@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start:ng": "wireit",
-    "start:electron": "wireit",
+    "tsc": "wireit",
+    "start": "wireit",
     "build:ng": "wireit"
   },
   "wireit": {
@@ -13,12 +13,19 @@
       "remark": "https://github.com/microsoft/TypeScript/issues/911"
     },
     "start:ng": {
-      "command": "ng serve --port 8020"
+      "command": "ng serve --port 8020",
+      "service": true
     },
-    "start:electron": {
-      "command": "echo You need to run the following commands: npx electron . --port 8020 --path=<path>",
+    "start": {
+      "command": "electron . --port 8020 --path=./example.json",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Server is listening on localhost:\\d+"
+        }
+      },
       "dependencies": [
-        "tsc"
+        "tsc",
+        "start:ng"
       ]
     },
     "build:ng": {

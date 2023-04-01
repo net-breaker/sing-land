@@ -1,6 +1,8 @@
 import { BrowserWindow, BrowserWindowConstructorOptions, Menu, MenuItem } from "electron";
+import * as os from "os";
 
 export class Editor {
+  private platform = os.platform();
   private window?: BrowserWindow;
   private windowConfig: BrowserWindowConstructorOptions = {
     width: 850,
@@ -8,7 +10,7 @@ export class Editor {
     minWidth: 850,
     minHeight: 600,
     titleBarStyle: "hiddenInset",
-    autoHideMenuBar: false,
+    autoHideMenuBar: this.platform === "darwin" ? false : true,
     vibrancy: "sidebar",
     visualEffectState: "followWindow",
     webPreferences: {

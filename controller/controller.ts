@@ -1,8 +1,10 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
 import * as contextMenu from "electron-context-menu";
 import * as fs from "fs";
+import * as os from "os";
 
 export class Controller {
+  private platform = os.platform();
   private window?: BrowserWindow;
   private windowConfig: BrowserWindowConstructorOptions = {
     width: 850,
@@ -11,8 +13,8 @@ export class Controller {
     minHeight: 600,
     // mac title menu
     titleBarStyle: "hiddenInset",
-    transparent: true,
-    autoHideMenuBar: false,
+    transparent: this.platform === "darwin" ? true : false,
+    autoHideMenuBar: this.platform === "darwin" ? false : true,
     frame: true,
     vibrancy: "sidebar",
     visualEffectState: "followWindow",

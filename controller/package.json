@@ -4,8 +4,7 @@
   "main": "main.js",
   "scripts": {
     "tsc": "wireit",
-    "start:ng": "wireit",
-    "start:electron": "wireit",
+    "start": "wireit",
     "build:ng": "wireit"
   },
   "wireit": {
@@ -14,12 +13,19 @@
       "remark": "https://github.com/microsoft/TypeScript/issues/911"
     },
     "start:ng": {
-      "command": "ng serve --port 8000"
+      "command": "ng serve --port 8000",
+      "service": true
     },
-    "start:electron": {
+    "start": {
       "command": "electron . --port 8000",
+      "service": {
+        "readyWhen": {
+          "lineMatches": "Server is listening on localhost:\\d+"
+        }
+      },
       "dependencies": [
-        "tsc"
+        "tsc",
+        "start:ng"
       ]
     },
     "build:ng": {
