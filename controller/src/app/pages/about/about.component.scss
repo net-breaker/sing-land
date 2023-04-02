@@ -1,0 +1,22 @@
+.item {
+  margin-bottom: 20px;
+
+  > div:first-child {
+    font-weight: bold;
+  }
+
+  ul {
+    display: inline-block;
+    margin-top: 2px;
+    padding-left: 15px;
+
+    li {
+      color: #00a1ff;
+      cursor: pointer;
+    }
+
+    li::marker {
+      color: black;
+    }
+  }
+}
