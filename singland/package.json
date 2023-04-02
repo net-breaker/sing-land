@@ -7,14 +7,42 @@
   "author": "anonysoul <i@anonysoul.com>",
   "main": "main.js",
   "scripts": {
-    "tsc": "wireit",
+    "init-unix": "wireit",
+    "init-win": "wireit",
     "start": "wireit",
     "build": "wireit"
   },
   "wireit": {
+    "clean-unix": {
+      "command": "rm -rf ./controller ; rm -rf ./editor ; rm -rf ./resources ; rm -f ./controller.ts ; rm -f ./editor.ts"
+    },
+    "init-unix": {
+      "command": "cp -r ../controller/dist/controller ./ && cp -r ../editor/dist/editor ./ && cp -r ../controller/resources ./ && cp ../controller/controller.ts ./ && cp ../editor/editor.ts ./",
+      "dependencies": [
+        "clean-unix",
+        "../controller:build:ng",
+        "../editor:build:ng"
+      ]
+    },
+    "clean-win": {
+      "command": "rmdir /s /q controller & rmdir /s /q editor & rmdir /s /q resources & del controller.ts & del editor.ts & exit /b 0"
+    },
+    "init-win": {
+      "command": "ROBOCOPY ..\\controller\\dist\\controller .\\controller /E & ROBOCOPY ..\\editor\\dist\\editor .\\editor /E & ROBOCOPY ..\\controller\\resources .\\resources /E & copy ..\\controller\\controller.ts & copy ..\\editor\\editor.ts",
+      "dependencies": [
+        "clean-win",
+        "../controller:build:ng",
+        "../editor:build:ng"
+      ]
+    },
+    "init": {
+      "command": "echo You must run 'init-unix' on unix-like systems or 'init-win' on windows systems"
+    },
     "tsc": {
-      "command": "tsc main.ts && tsc application.ts",
-      "remark":"https://github.com/microsoft/TypeScript/issues/911"
+      "command": "tsc main.ts && tsc controller.ts && tsc editor.ts",
+      "dependencies": [
+        "init"
+      ]
     },
     "start": {
       "command": "electron .",
@@ -23,7 +51,7 @@
       ]
     },
     "build": {
-      "command": "electron-builder build",
+      "command": "electron-builder build --publish=never",
       "dependencies": [
         "tsc"
       ]

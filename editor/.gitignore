@@ -38,3 +38,5 @@ testem.log
 Thumbs.db
 
 .wireit
+main.js
+editor.js
