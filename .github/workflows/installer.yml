@@ -9,53 +9,6 @@ on:
       - main
 
 jobs:
-  package:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          lfs: true
-          clean: true
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3.5.0
-        with:
-          node-version: 18
-
-      - uses: google/wireit@setup-github-actions-caching/v1
-
-      - name: Install dependencies for controller
-        run: npm ci
-        working-directory: ./controller
-
-      - name: Build controller
-        run: npm run build:ng
-        working-directory: ./controller
-
-      - name: Publish controller
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: angular-controller
-          path: ./controller/dist/controller
-          if-no-files-found: error
-
-      - name: Install dependencies for editor
-        run: npm ci
-        working-directory: ./editor
-
-      - name: Build editor
-        run: npm run build:ng
-        working-directory: ./editor
-
-      - name: Publish editor
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: angular-editor
-          path: ./editor/dist/editor
-          if-no-files-found: error
-
   installer:
     name: Compile installer on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -77,24 +30,6 @@ jobs:
           node-version: 18
 
       - uses: google/wireit@setup-github-actions-caching/v1
-
-      - name: Create temp directory
-        run: |
-          mkdir -p artifacts/controller
-          mkdir -p artifacts/editor
-          mkdir -p artifacts/sing-box
-
-      - name: Download angular-controller
-        uses: actions/download-artifact@v2.1.1
-        with:
-          name: angular-controller
-          path: artifacts/controller
-
-      - name: Download angular-editor
-        uses: actions/download-artifact@v2.1.1
-        with:
-          name: angular-editor
-          path: artifacts/editor
 
       - name: Download sing-box for Linux
         if: matrix.os == 'ubuntu-latest'
@@ -118,26 +53,30 @@ jobs:
           Expand-Archive .\sing-box.zip -DestinationPath .\artifacts\sing-box
           Move-Item -Path .\artifacts\sing-box\**\sing-box.exe -Destination .\controller\resources\sing-box\
 
-      - name: Preparing files
-        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
-        run: |
-          mv ./artifacts/controller/* ./singland/controller
-          mv ./artifacts/editor/* ./singland/editor
-          mv ./controller/resources ./singland/resources
+      - name: Install dependencies for controller
+        run: npm ci
+        working-directory: ./controller
 
-      - name: Preparing files
-        if: matrix.os == 'windows-latest'
-        run: |
-          Move-Item -Path .\artifacts\controller\* -Destination .\singland\controller
-          Move-Item -Path .\artifacts\editor\* -Destination .\singland\editor
-          Move-Item -Path .\controller\resources -Destination .\singland\resources
+      - name: Install dependencies for editor
+        run: npm ci
+        working-directory: ./editor
 
       - name: Install dependencies for singland
         run: npm ci
         working-directory: ./singland
 
       - name: Build
-        run: npm run build
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macOS-latest'
+        run: |
+          npm run init-unix
+          npm run build
+        working-directory: ./singland
+
+      - name: Build
+        if: matrix.os == 'windows-latest'
+        run: |
+          npm run init-win
+          npm run build
         working-directory: ./singland
 
       - name: Publish installer for Linux
