@@ -20,8 +20,6 @@
       "command": "cp -r ../controller/dist/controller ./ && cp -r ../editor/dist/editor ./ && cp -r ../controller/resources ./ && cp ../controller/controller.ts ./ && cp ../editor/editor.ts ./",
       "dependencies": [
         "clean-unix",
-        "../controller:tsc",
-        "../editor:tsc",
         "../controller:build:ng",
         "../editor:build:ng"
       ]
@@ -33,8 +31,6 @@
       "command": "ROBOCOPY ..\\controller\\dist\\controller .\\controller /E & ROBOCOPY ..\\editor\\dist\\editor .\\editor /E & ROBOCOPY ..\\controller\\resources .\\resources /E & copy ..\\controller\\controller.ts & copy ..\\editor\\editor.ts",
       "dependencies": [
         "clean-win",
-        "../controller:tsc",
-        "../editor:tsc",
         "../controller:build:ng",
         "../editor:build:ng"
       ]
