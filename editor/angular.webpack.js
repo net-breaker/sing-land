@@ -11,6 +11,10 @@ module.exports = {
         test: /\.css$/,
         include: MONACO_DIR,
         use: ["css-loader"]
+      },
+      {
+        test: /\.node$/,
+        use: "raw-loader"
       }
     ]
   },
