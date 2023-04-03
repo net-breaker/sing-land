@@ -1,0 +1,51 @@
+name: Bug Report 🐛
+description: Report something that's not working the way it's (probably) intended to
+title: "[BUG] <title>"
+labels: ["🐛 Bug"]
+assignees:
+  - anonysoul
+body:
+  - type: input
+    id: system
+    attributes:
+      label: System
+      description: >-
+        Where are you running Singland?, specify your [distro or OS](https://whatsmyos.com/)
+      placeholder: e.g. Windows 11
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of Singland are you running?
+      placeholder: 1.0.0
+    validations:
+      required: false
+  - type: textarea
+    id: repro
+    attributes:
+      label: Describe the problem
+      description: Please describe exactly what is not working, include the steps to reproduce, actual result and expected result
+      placeholder: When doing ABC then DEF, I expect to see XYZ, but I actually see ZYX
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Additional info
+      description: Logs? Screenshots? Yes, please.
+    validations:
+      required: false
+  - type: checkboxes
+    id: idiot-check
+    attributes:
+      label: Please tick the boxes
+      description: Before submitting, please ensure that
+      options:
+        - label: You have explained the issue clearly, and included all relevant info
+          required: true
+        - label: You've checked that this [issue hasn't already been raised](https://github.com/net-breaker/sing-land/issues?q=is%3Aissue)
+          required: true
+        - label: You agree to the [code of conduct](https://github.com/net-breaker/sing-land/blob/master/.github/document/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct)
+          required: true
