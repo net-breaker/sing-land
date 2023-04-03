@@ -10,7 +10,7 @@ body:
     attributes:
       label: System
       description: >-
-        Where are you running Singland?, specify your [distro or OS](https://whatsmyos.com/)
+        Where are you running Singland? Specify your [distro or OS](https://whatsmyos.com/).
       placeholder: e.g. Windows 11
     validations:
       required: false
@@ -47,5 +47,5 @@ body:
           required: true
         - label: You've checked that this [issue hasn't already been raised](https://github.com/net-breaker/sing-land/issues?q=is%3Aissue)
           required: true
-        - label: You agree to the [code of conduct](https://github.com/net-breaker/sing-land/blob/master/.github/document/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct)
+        - label: You agree to the [code of conduct](https://github.com/net-breaker/sing-land/blob/main/.github/document/CODE_OF_CONDUCT.md#contributor-covenant-code-of-conduct)
           required: true
