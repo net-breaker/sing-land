@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { ipcRenderer } from "electron";
 import { NzModalService } from "ng-zorro-antd/modal";
 import { NotificationProvider } from "src/app/core/provider/notification.provider";
-import { FileProfile, ProfilesService } from "src/app/core/service/profiles.service";
+import { ProfilesService } from "src/app/core/service/profiles.service";
 import { ProfilesAddProvider } from "./profiles-add/profiles-add.provider";
 
 @Component({
@@ -28,7 +28,6 @@ export class ProfilesComponent implements OnInit {
 
   ngOnInit(): void {
     this.bindDragEvent();
-    this.handleContextMenu();
   }
 
   /**
@@ -90,42 +89,6 @@ export class ProfilesComponent implements OnInit {
 
     this.dragElement.nativeElement.addEventListener("dragover", (event: any) => {
       event.preventDefault();
-    });
-  }
-
-  handleContextMenu(): void {
-    ipcRenderer.on("profiles", (event, operator, profileName) => {
-      const profile = this.profilesService.getProfileByName(profileName);
-      switch (operator) {
-        case "edit":
-          profile && this.profilesAddProvider.editProfile(profile);
-          break;
-        case "coder":
-          const file = profile as FileProfile;
-          ipcRenderer.invoke("coder", file.path);
-          break;
-        case "sync":
-          this.profilesService  
-            .syncProfileByName(profileName)
-            .then(() => {
-              this.notificationProvider.notification("Sync profile success", "success");
-            })
-            .catch((err) => {
-              this.notificationProvider.notification("Sync profile failed", err.message);
-            });
-          break;
-        case "delete":
-          this.modal.confirm({
-            nzTitle: "Are you sure delete this profile?",
-            nzContent: profileName,
-            nzOkText: "Yes",
-            nzOkType: "primary",
-            nzOkDanger: true,
-            nzOnOk: async () => await this.profilesService.deleteProfileByName(profileName),
-            nzCancelText: "No"
-          });
-          break;
-      }
     });
   }
 

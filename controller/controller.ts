@@ -1,5 +1,4 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
-import * as contextMenu from "electron-context-menu";
 import * as fs from "fs";
 import * as os from "os";
 
@@ -46,7 +45,6 @@ export class Controller {
     } else {
       this.window.loadFile("./controller/index.html");
     }
-    this.setContextMenu();
   }
 
   private setEnvironment() {
@@ -58,56 +56,5 @@ export class Controller {
 
     process.env["NODE_CONFIG_DIR"] = NODE_CONFIG_DIR;
     console.log(`export NODE_CONFIG_DIR=${NODE_CONFIG_DIR}`);
-  }
-
-  private setContextMenu() {
-    const getProfileName = (title: string): string => {
-      return title.substring(0, title.indexOf("\n"));
-    };
-    const contextMenuConfig: contextMenu.Options = {
-      showInspectElement: false,
-      showSelectAll: false,
-      showCopyImage: false,
-      showSaveImageAs: false,
-      showLearnSpelling: false,
-      showLookUpSelection: false,
-      showSearchWithGoogle: false,
-      menu: (actions, params, browserWindow) => [],
-      prepend: (defaultActions, parameters, browserWindow, event) => [
-        {
-          label: "edit",
-          visible: parameters.titleText.endsWith("file") || parameters.titleText.endsWith("connection"),
-          click: () => {
-            let name = getProfileName(parameters.titleText);
-            this.window!.webContents.send("profiles", "edit", name);
-          }
-        },
-        {
-          label: "coder",
-          visible: parameters.titleText.endsWith("local file") || parameters.titleText.endsWith("remote file"),
-          click: () => {
-            let name = getProfileName(parameters.titleText);
-            this.window!.webContents.send("profiles", "coder", name);
-          }
-        },
-        {
-          label: "sync",
-          visible: parameters.titleText.endsWith("remote file"),
-          click: () => {
-            let name = getProfileName(parameters.titleText);
-            this.window!.webContents.send("profiles", "sync", name);
-          }
-        },
-        {
-          label: "delete",
-          visible: parameters.titleText.endsWith("file") || parameters.titleText.endsWith("connection"),
-          click: () => {
-            let name = getProfileName(parameters.titleText);
-            this.window!.webContents.send("profiles", "delete", name);
-          }
-        }
-      ]
-    };
-    contextMenu(contextMenuConfig);
   }
 }

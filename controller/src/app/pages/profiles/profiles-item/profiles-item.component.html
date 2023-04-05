@@ -1,4 +1,4 @@
-<div class="profile {{ loadding ? 'loadding' : '' }} {{ selected ? 'active' : '' }}" *ngIf="fileProfile" draggable="true" title="{{ fileProfile.name }}&#10;{{ type }}" (click)="selectProfile()">
+<div class="profile {{ loadding ? 'loadding' : '' }} {{ selected ? 'active' : '' }}" *ngIf="fileProfile" draggable="true" (click)="selectProfile()">
   <div class="title">
     {{ fileProfile.name }}
   </div>
