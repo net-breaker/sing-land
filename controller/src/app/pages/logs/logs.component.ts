@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Subscription } from "rxjs";
+import { Subscription, timer } from "rxjs";
 import { Log } from "src/app/core/infrastructure/singbox.infrastructure";
 import { LogMonitorService } from "src/app/core/service/monitor-log.service";
 
@@ -11,11 +11,17 @@ import { LogMonitorService } from "src/app/core/service/monitor-log.service";
 export class LogsComponent implements OnInit {
   level = "ALL";
   private logsSubscription: Subscription | undefined;
+  private viewRefreshSubscription: Subscription | undefined;
 
   private allLogs: Log[] = [];
-  logs: Log[] = [];
+  private filteredLogs: Log[] = [];
+  viewLogs: Log[] = [];
 
-  constructor(private logMonitorService: LogMonitorService) {}
+  constructor(private logMonitorService: LogMonitorService) {
+    this.viewRefreshSubscription = timer(0, 300).subscribe(() => {
+      this.viewLogs = this.filteredLogs;
+    });
+  }
 
   ngOnInit(): void {
     this.logsSubscription = this.logMonitorService.logs$.subscribe((logs) => {
@@ -25,7 +31,7 @@ export class LogsComponent implements OnInit {
   }
 
   filterLogs() {
-    this.logs = this.allLogs.filter((log) => {
+    this.filteredLogs = this.allLogs.filter((log) => {
       if (this.level === "ALL") return true;
       return log.level == this.level;
     });
@@ -37,5 +43,6 @@ export class LogsComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.logsSubscription?.unsubscribe();
+    this.viewRefreshSubscription?.unsubscribe();
   }
 }

@@ -1,6 +1,6 @@
 {
-  "version": "pre-alpha",
-  "singbox-version": "Premium 2022.08.26",
+  "version": "pre-alpha-1",
+  "singbox-version": "1.2.2",
   "logger": {
     "directory": "log",
     "level": "all"
