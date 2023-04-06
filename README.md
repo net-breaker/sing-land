@@ -2,15 +2,15 @@
 
 A GUI for sing-box
 
-## Thanks
+## Credits
 
-Singland is made possible by the following open source project, and we highly recommend you check them out too:
+Singland is made possible by the [sing-box](https://github.com/SagerNet/sing-box) open source project and another open source projects:
 
-- [sing-box](https://github.com/SagerNet/sing-box)
 - [electron](https://github.com/electron/electron)
 - [angular](https://github.com/angular/angular)
 - [monaco-editor](https://github.com/microsoft/monaco-editor)
 - [wireit](https://github.com/google/wireit)
+- more...
 
 ## Disclaimer
 
@@ -21,7 +21,7 @@ The code and related resources are meant for educational purposes only. It is th
 Singland is Licensed under [MIT X11](https://en.wikipedia.org/wiki/MIT_License)
 
 ```
-Copyright © 2023 Anonysoul <https://service@anonysoul.com>
+Copyright © 2023 Anonysoul <service@anonysoul.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software
