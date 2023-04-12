@@ -5,7 +5,15 @@ import fs from "fs";
 import path from "path";
 import { Observable, Observer, timer } from "rxjs";
 import { NotificationProvider } from "src/app/core/provider/notification.provider";
-import { FileProfile, Profile, ProfilesService, RemoteProfile } from "src/app/core/service/profiles.service";
+import {
+  FileProfile,
+  Profile,
+  ProfilesService,
+  RemoteProfile,
+  SubscribeAuthorization,
+  SubscribeBasicAuthorization,
+  SubscribeBearerAuthorization
+} from "src/app/core/service/profiles.service";
 import { ProfilesAddProvider } from "./profiles-add.provider";
 
 @Component({
@@ -18,7 +26,7 @@ export class ProfilesAddComponent implements OnInit {
   fileSelectorElement!: ElementRef;
 
   uuidJoiner = /-/g;
-  urlRegex = "^(https?:\\/\\/)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .\\-=\\?%&]*/?$";
+  urlRegex = "^((https|http)?:\/\/)[^\s]+";
 
   isLocalFileModalVisible = false;
   isLocalFileModalOKLoadding = false;
@@ -39,14 +47,6 @@ export class ProfilesAddComponent implements OnInit {
     private profilesService: ProfilesService,
     private profilesAddProvider: ProfilesAddProvider
   ) {
-    profilesAddProvider.profilesEditObservable.subscribe((profile: Profile | undefined) => {
-      if (profile === undefined) return;
-      this.editingProfile = profile;
-      this.showEditProfileModal();
-    });
-  }
-
-  ngOnInit(): void {
     this.localFileProfileForm = this.fb.group({
       name: [null, [Validators.required], [this.nameExistedRequired]],
       path: [null, [Validators.required]]
@@ -64,7 +64,11 @@ export class ProfilesAddComponent implements OnInit {
             return {};
           }
         ]
-      ]
+      ],
+      authorization: ["none", [Validators.required]],
+      token: [null],
+      username: [null],
+      password: [null]
     });
 
     this.remoteConnectionProfileForm = this.fb.group({
@@ -73,6 +77,14 @@ export class ProfilesAddComponent implements OnInit {
       host: [null, [Validators.required]],
       port: [null, [Validators.required]],
       authorization: [null, [Validators.required]]
+    });
+  }
+
+  ngOnInit(): void {
+    this.profilesAddProvider.profilesEditObservable.subscribe((profile: Profile | undefined) => {
+      if (profile === undefined) return;
+      this.editingProfile = profile;
+      this.showEditProfileModal();
     });
 
     this.profilesAddProvider.localProfilesAdd$.subscribe((files: FileList | undefined) => {
@@ -190,6 +202,7 @@ export class ProfilesAddComponent implements OnInit {
   showAddRemoteFileProfileModal(): void {
     this.isEditing = false;
     this.remoteFileProfileForm.reset();
+    this.remoteFileProfileForm.controls["authorization"].setValue("none");
     this.isRemoteFileModalVisible = true;
   }
 
@@ -213,14 +226,39 @@ export class ProfilesAddComponent implements OnInit {
 
   async addRemoteFileProfile(): Promise<void> {
     const subscribeUrl = this.remoteFileProfileForm.value.url;
-    const path = await this.profilesService.saveProfileFromRemote(subscribeUrl);
+    const authorizationType = this.remoteFileProfileForm.value.authorization;
+    const token = this.remoteFileProfileForm.value.token;
+    const username = this.remoteFileProfileForm.value.username;
+    const password = this.remoteFileProfileForm.value.password;
+
+    let authorization: SubscribeAuthorization | undefined;
+    switch (authorizationType) {
+      case "basic":
+        authorization = {
+          type: "basic",
+          username: username,
+          password: password
+        } as SubscribeBasicAuthorization;
+        break;
+      case "bearer":
+        authorization = {
+          type: "bearer",
+          token: token
+        } as SubscribeBearerAuthorization;
+        break;
+      default:
+        authorization = undefined;
+    }
+
+    const path = await this.profilesService.saveProfileFromRemote(subscribeUrl, authorization);
     const profile: FileProfile = {
       id: randomUUID().replace(this.uuidJoiner, ""),
       type: "file",
       createTimestamp: new Date().getTime(),
       name: this.remoteFileProfileForm.value.name.trim(),
       path: path,
-      subscribeUrl: subscribeUrl
+      subscribeUrl: subscribeUrl,
+      subscribeAuthorization: authorization
     };
     this.profilesService.addProfile(profile);
     this.isRemoteFileModalVisible = false;
@@ -317,7 +355,31 @@ export class ProfilesAddComponent implements OnInit {
 
   async updateRemoteFileProfile(): Promise<void> {
     const subscribeUrl = this.remoteFileProfileForm.value.url;
-    const path = await this.profilesService.saveProfileFromRemote(subscribeUrl);
+    const authorizationType = this.remoteFileProfileForm.value.authorization;
+    const token = this.remoteFileProfileForm.value.token;
+    const username = this.remoteFileProfileForm.value.username;
+    const password = this.remoteFileProfileForm.value.password;
+
+    let authorization: SubscribeAuthorization | undefined;
+    switch (authorizationType) {
+      case "basic":
+        authorization = {
+          type: "basic",
+          username: username,
+          password: password
+        } as SubscribeBasicAuthorization;
+        break;
+      case "bearer":
+        authorization = {
+          type: "bearer",
+          token: token
+        } as SubscribeBearerAuthorization;
+        break;
+      default:
+        authorization = undefined;
+    }
+
+    const path = await this.profilesService.saveProfileFromRemote(subscribeUrl, authorization);
     const profile: FileProfile = {
       id: this.editingProfile!.id,
       type: "file",
@@ -325,7 +387,8 @@ export class ProfilesAddComponent implements OnInit {
       updateTimestamp: new Date().getTime(),
       name: this.remoteFileProfileForm.value.name.trim(),
       path: path,
-      subscribeUrl: subscribeUrl
+      subscribeUrl: subscribeUrl,
+      subscribeAuthorization: authorization
     };
     this.profilesService.updateProfile(profile);
     const fileProfile = this.editingProfile as FileProfile;

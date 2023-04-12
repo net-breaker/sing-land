@@ -61,6 +61,34 @@
           <input nz-input formControlName="url" id="url" />
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="authorization">Authorization</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Authorization!">
+          <nz-select formControlName="authorization" id="authorization">
+            <nz-option nzValue="none" nzLabel="none"></nz-option>
+            <nz-option nzValue="basic" nzLabel="basic"></nz-option>
+            <nz-option nzValue="bearer" nzLabel="bearer"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item [hidden]="remoteFileProfileForm.value.authorization !== 'basic'">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="username">Username</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Username!">
+          <input nz-input formControlName="username" id="username" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item [hidden]="remoteFileProfileForm.value.authorization !== 'basic'">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="password">Password</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Password!">
+          <input nz-input formControlName="password" id="password" />
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item [hidden]="remoteFileProfileForm.value.authorization !== 'bearer'">
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="token">Token</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="The input is not valid Token!">
+          <input nz-input formControlName="token" id="token" />
+        </nz-form-control>
+      </nz-form-item>
     </form>
   </ng-container>
 </nz-modal>

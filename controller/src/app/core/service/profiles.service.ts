@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import * as chokidar from "chokidar";
 import fs from "fs";
@@ -30,6 +30,7 @@ export interface FileProfile extends Profile {
   type: "file";
   path: string;
   subscribeUrl?: string;
+  subscribeAuthorization?: SubscribeAuthorization;
 }
 
 export interface RemoteProfile extends Profile {
@@ -39,6 +40,21 @@ export interface RemoteProfile extends Profile {
   port: number;
   authorization: string;
   version: string;
+}
+
+export interface SubscribeAuthorization {
+  type: "basic" | "bearer";
+}
+
+export interface SubscribeBasicAuthorization {
+  type: "basic";
+  username: string;
+  password: string;
+}
+
+export interface SubscribeBearerAuthorization {
+  type: "bearer";
+  token: string;
 }
 
 export type syncProfileStatusType = "synchronizing" | "success" | "failed";
@@ -199,10 +215,27 @@ export class ProfilesService {
     });
   }
 
-  saveProfileFromRemote(url: string): Promise<string> {
+  saveProfileFromRemote(url: string, authorization?: SubscribeAuthorization): Promise<string> {
     return new Promise((resolve, reject) => {
+      let httpHeaders = new HttpHeaders();
+      if (authorization !== undefined) {
+        switch (authorization.type) {
+          case "basic":
+            const basicAuthorization = authorization as SubscribeBasicAuthorization;
+            const base64 = Buffer.from(`${basicAuthorization.username}:${basicAuthorization.password}`, 'binary').toString('base64');
+            httpHeaders = httpHeaders.set("Authorization", `Basic ${base64}`);
+            break;
+          case "bearer":
+            const bearerAuthorization = authorization as SubscribeBearerAuthorization;
+            httpHeaders = httpHeaders.set("Authorization", `Bearer ${bearerAuthorization.token}`);
+            break;
+        }
+      }
       this.httpClient
-        .get(url, { responseType: "blob" })
+        .get(url, {
+          responseType: "blob",
+          headers: httpHeaders
+        })
         .pipe(timeout(this.syncProfileFromRemoteTimeout))
         .subscribe({
           next: (blob) => {
@@ -269,7 +302,7 @@ export class ProfilesService {
       if (profile.type !== "file") return;
       try {
         this.profileSyncStatusBehaviorSubject.next({ profileId: profile.id, status: "synchronizing" });
-        const absolutePath = await this.saveProfileFromRemote(profile.subscribeUrl!);
+        const absolutePath = await this.saveProfileFromRemote(profile.subscribeUrl!, profile.subscribeAuthorization);
         fs.existsSync(profile.path) && fs.unlinkSync(profile.path);
         profile.path = absolutePath;
         profile.updateTimestamp = new Date().getTime();
