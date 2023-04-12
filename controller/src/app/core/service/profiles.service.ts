@@ -102,40 +102,39 @@ export class ProfilesService {
   async selectProfile(id: string): Promise<void> {
     const profile = this.getProfiles().find((profile) => profile.id === id);
     if (profile === undefined) throw new Error("Profile not found");
-    // await this.verifyProfile(profile);
+    await this.verifyProfile(profile);
     this.settingManager.set("profile.selected", id);
     this.profileSelectedChangedBehaviorSubject.next(profile);
   }
 
-  // verifyProfile(profile: Profile): Promise<void> {
-  //   return new Promise((resolve, reject) => {
-  //     if (profile.type === "file") {
-  //       const fileProfile = profile as FileProfile;
-  //       if (!fs.existsSync(fileProfile.path)) {
-  //         reject(new Error("File not found"));
-  //         return;
-  //       }
-  //       const content = fs.readFileSync(fileProfile.path, "utf-8");
-  //       try {
-  //         yaml.load(content);
-  //         resolve();
-  //       } catch (err: any) {
-  //         // err instanceof yaml.YAMLException
-  //         const message = err.message.split("\n")[0];
-  //         reject(new Error(message));
-  //       }
-  //     } else {
-  //       const remoteProfile = profile as RemoteProfile;
-  //       this.testRemoteConnection(remoteProfile.schema, remoteProfile.host, remoteProfile.port, remoteProfile.authorization)
-  //         .then(() => {
-  //           resolve();
-  //         })
-  //         .catch((err) => {
-  //           reject(err);
-  //         });
-  //     }
-  //   });
-  // }
+  verifyProfile(profile: Profile): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (profile.type === "file") {
+        const fileProfile = profile as FileProfile;
+        if (!fs.existsSync(fileProfile.path)) {
+          reject(new Error("File not found"));
+          return;
+        }
+        const content = fs.readFileSync(fileProfile.path, "utf-8");
+        try {
+          JSON.parse(content);
+          resolve();
+        } catch (err: any) {
+          const message = err.message.split("\n")[0];
+          reject(new Error(message));
+        }
+      } else {
+        const remoteProfile = profile as RemoteProfile;
+        this.testRemoteConnection(remoteProfile.schema, remoteProfile.host, remoteProfile.port, remoteProfile.authorization)
+          .then(() => {
+            resolve();
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      }
+    });
+  }
 
   existsName(name: string): boolean {
     return this.getProfiles().some((profile) => profile.name === name);
