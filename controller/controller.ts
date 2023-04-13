@@ -1,4 +1,4 @@
-import { BrowserWindow, BrowserWindowConstructorOptions } from "electron";
+import { BrowserWindow, BrowserWindowConstructorOptions, app } from "electron";
 import * as fs from "fs";
 import * as os from "os";
 
@@ -25,6 +25,8 @@ export class Controller {
     }
   };
 
+  private isQuiting: boolean = false;
+
   constructor() {
     this.setEnvironment();
   }
@@ -45,6 +47,14 @@ export class Controller {
     } else {
       this.window.loadFile("./controller/index.html");
     }
+
+    this.window.on("close", (event) => {
+      if (!this.isQuiting) {
+        event.preventDefault();
+        this.window!.hide();
+      }
+      return false;
+    });
   }
 
   private setEnvironment() {
@@ -56,5 +66,18 @@ export class Controller {
 
     process.env["NODE_CONFIG_DIR"] = NODE_CONFIG_DIR;
     console.log(`export NODE_CONFIG_DIR=${NODE_CONFIG_DIR}`);
+  }
+
+  hide() {
+    if (this.window) this.window.hide();
+  }
+
+  show() {
+    if (this.window) this.window.show();
+  }
+
+  quit() {
+    this.isQuiting = true;
+    app.quit();
   }
 }

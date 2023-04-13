@@ -12,6 +12,10 @@
   ],
   "extraResources": [
     {
+      "from": "./icons",
+      "to": "./icons"
+    },
+    {
       "from": "./resources/config",
       "to": "./config"
     },
