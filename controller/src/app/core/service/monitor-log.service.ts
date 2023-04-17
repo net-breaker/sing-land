@@ -23,7 +23,6 @@ export class LogMonitorService {
     this.singboxManager.localSingboxLogs$.pipe(filter((log) => log !== null)).subscribe((log) => {
       this.logs.unshift(log!);
       if (this.logs.length > this.cacheLogCount) this.logs.pop();
-      console.log(this.logs.length);
       this.logsBehaviorSubject.next(this.logs);
     });
   }

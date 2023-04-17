@@ -1,5 +1,5 @@
 {
-  "version": "pre-alpha-1",
+  "version": "pre-alpha-2",
   "singbox-version": "1.2.2",
   "logger": {
     "directory": "log",
