@@ -1,13 +1,20 @@
 import { BrowserWindow, BrowserWindowConstructorOptions, app } from "electron";
+import * as windowStateKeeper from "electron-window-state";
 import * as fs from "fs";
 import * as os from "os";
 
 export class Controller {
   private platform = os.platform();
   private window?: BrowserWindow;
+  private windowState = windowStateKeeper({
+    defaultWidth: 850,
+    defaultHeight: 600
+  });
   private windowConfig: BrowserWindowConstructorOptions = {
-    width: 850,
-    height: 600,
+    x: this.windowState.x,
+    y: this.windowState.y,
+    width: this.windowState.width,
+    height: this.windowState.height,
     minWidth: 850,
     minHeight: 600,
     // mac title menu
@@ -38,6 +45,7 @@ export class Controller {
     }
 
     this.window = new BrowserWindow(this.windowConfig);
+    this.windowState.manage(this.window);
     if (process.argv.indexOf("--port") > -1) {
       const portIndex = process.argv.indexOf("--port") + 1;
       const port = process.argv[portIndex];
