@@ -1,4 +1,15 @@
 @media (prefers-color-scheme: dark) {
+  .platform-linux,
+  .platform-win32 {
+    nz-sider {
+      background: #363636 !important;
+    }
+
+    .inner-content {
+      background-color: #505050 !important;
+    }
+  }
+
   .sidebar-logo,
   .ant-menu-item,
   .ant-menu-item a,
