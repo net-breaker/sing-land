@@ -1,6 +1,6 @@
 {
-  "version": "pre-alpha-2",
-  "singbox-version": "1.2.2",
+  "version": "pre-alpha-3",
+  "singbox-version": "1.2.7",
   "logger": {
     "directory": "log",
     "level": "all"
