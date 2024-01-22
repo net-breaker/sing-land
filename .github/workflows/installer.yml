@@ -34,7 +34,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: |
           mkdir -p artifacts/sing-box
-          wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.6.0/sing-box-1.6.0-linux-amd64.tar.gz
+          wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.8.2/sing-box-1.8.2-linux-amd64.tar.gz
           tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
           mv artifacts/sing-box/**/sing-box controller/resources/sing-box
 
@@ -42,7 +42,7 @@ jobs:
         if: matrix.os == 'macOS-latest'
         run: |
           mkdir -p artifacts/sing-box
-          wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.6.0/sing-box-1.6.0-darwin-amd64.tar.gz
+          wget -O ./sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.8.2/sing-box-1.8.2-darwin-amd64.tar.gz
           tar -xvzf ./sing-box.tar.gz -C ./artifacts/sing-box
           mv artifacts/sing-box/**/sing-box controller/resources/sing-box
 
@@ -51,7 +51,7 @@ jobs:
         shell: pwsh
         run: |
           mkdir -p artifacts/sing-box
-          Invoke-RestMethod -Uri https://github.com/SagerNet/sing-box/releases/download/v1.6.0/sing-box-1.6.0-windows-amd64.zip -OutFile sing-box.zip
+          Invoke-RestMethod -Uri https://github.com/SagerNet/sing-box/releases/download/v1.8.2/sing-box-1.8.2-windows-amd64.zip -OutFile sing-box.zip
           Expand-Archive .\sing-box.zip -DestinationPath .\artifacts\sing-box
           Move-Item -Path .\artifacts\sing-box\**\sing-box.exe -Destination .\controller\resources\sing-box\
 
